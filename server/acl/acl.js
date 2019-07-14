@@ -1,7 +1,12 @@
 const rolesPermissions = [
     {
         role: 'admin',
-        permission: ['post_pishkhan', 'village_fix_wired', 'village_fix_wireless', 'village_mobile']
+        permission: [
+            'post_pishkhan',
+            'village_fix_wired',
+            'village_fix_wireless',
+            'village_mobile'
+        ]
     },
 
     {
@@ -22,39 +27,27 @@ const rolesPermissions = [
     {
         role: 'village_mobile_user',
         permission: ['village_mobile']
-    },
+    }
 ];
 
 const permissionAPIandMethod = [
     {
         permission: 'post_pishkhan',
-        whitelist: [
-            { '/api/test11': 'POST' },
-            { '/api/test1': 'GET' }
-        ]
+        whitelist: [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
     },
     {
         permission: 'village_fix_wired',
-        whitelist: [
-            { '/api/test3': 'POST' },
-            { '/api/test3': 'GET' }
-        ]
+        whitelist: [{ '/api/test3': 'POST' }, { '/api/test3': 'GET' }]
     },
     {
         permission: 'village_fix_wireless',
-        whitelist: [
-            { '/api/test4': 'POST' },
-            { '/api/test4': 'GET' }
-        ]
+        whitelist: [{ '/api/test4': 'POST' }, { '/api/test4': 'GET' }]
     },
     {
         permission: 'village_mobile',
-        whitelist: [
-            { '/api/test5': 'POST' },
-            { '/api/test5': 'GET' }
-        ]
-    },
-]
+        whitelist: [{ '/api/test5': 'POST' }, { '/api/test5': 'GET' }]
+    }
+];
 
 module.exports = {
     rolesPermissions,

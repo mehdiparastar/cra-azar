@@ -22,6 +22,7 @@ let UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 6,
+        unique: true,
         validate: {
             validator: validator.isEmail,
             message: `{value} is not valid email`
@@ -45,9 +46,9 @@ let UserSchema = new mongoose.Schema({
     roles: [
         {
             _id: false,
-            type:String,
-            required:true,
-            minlength:3
+            type: String,
+            required: true,
+            minlength: 3
         }
     ]
 });
@@ -56,41 +57,34 @@ UserSchema.methods.toJSON = function () {
     let thisUser = this
     let userObject = thisUser.toObject()
 
-    return _.pick(userObject, ['_id', 'fullname', 'email','roles'])
+    return _.pick(userObject, ['_id', 'fullname', 'email', 'roles'])
 }
 
 UserSchema.statics.findByCredentials = function (email, password) {
     let thisUser = this;
-    return thisUser
-        .findOne({
-            email: email
-        })
-        .then(findedUser => {
-            if (!findedUser) {
-                Promise.reject();
-            }
-            return new Promise((resolve, reject) => {
-                bcrypt.compare(password, findedUser.password, (err, res) => {
-                    if (res) {
-                        resolve(findedUser);
-                    } else {
-                        reject();
-                    }
-                });
+    return thisUser.findOne({ email: email }).then(findedUser => {
+        if (!findedUser) { Promise.reject(); }
+
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(password, findedUser.password, (err, res) => {
+                if (res) {
+                    resolve(findedUser);
+                } else {
+                    reject();
+                }
             });
         });
+    });
 };
 
 UserSchema.methods.generateAuthToken = function () {
     let thisUser = this;
     let access = 'auth';
 
-    let token = jwt.sign({
-        _id: thisUser._id.toHexString(),
-        access: access
-    }, config.get('JWT_SECRET')).toString()
+    let token = jwt.sign({ _id: thisUser._id.toHexString(), access: access }, config.get('JWT_SECRET')).toString()
 
     thisUser.tokens.push({ access, token })
+
     return thisUser.save().then(() => { return token })
 };
 

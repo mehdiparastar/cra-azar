@@ -8,6 +8,8 @@ mongoose.Promise = global.Promise;
 
 mongoose.connect(config.get('MONGOURI'), { useNewUrlParser: true });
 
+mongoose.set('useCreateIndex', true);
+
 module.exports = {
     mongoose
 };
