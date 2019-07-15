@@ -34,6 +34,10 @@ const women_count = {
 }
 
 let OstanSchema = new mongoose.Schema({
+    _id: {
+        type: mongoose.Types.ObjectId
+    },
+
     Ostan_id: {
         type: String,
         required: true,
@@ -229,7 +233,8 @@ const Ostan_init_Data = excelToJson({
         'D': '{{D1}}',
         'E': '{{E1}}',
         'F': '{{F1}}',
-        'G': '{{G1}}'
+        'G': '{{G1}}',
+        'H': '{{H1}}'
     }
 });
 
@@ -308,10 +313,12 @@ console.log({
     'Dehestan_Shahr_init_Data': Dehestan_Shahr_init_Data.Dehestan_Shahr.length,
     'Abadi_init_Data': Abadi_init_Data.Abadi.length,
 })
+Ostan_init_Data.Ostan.forEach((element) => { element._id = mongoose.Types.ObjectId(element._id) })
+
 Ostan.collection.insertMany(Ostan_init_Data.Ostan).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log(err, 'Ostan Exist') })
-Shahrestan.collection.insertMany(Shahrestan_init_Data.Shahrestan).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log(err, 'Shahrestan Exist') })
-Bakhsh.collection.insertMany(Bakhsh_init_Data.Bakhsh).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log(err, 'Bakhsh Exist') })
-Dehestan_Shahr.collection.insertMany(Dehestan_Shahr_init_Data.Dehestan_Shahr).then((result) => { console.log('Dehestan_Shahr Initialized') }).catch((err) => { console.log(err, 'Dehestan_Shahr Exist') })
+// Shahrestan.collection.insertMany(Shahrestan_init_Data.Shahrestan).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log(err, 'Shahrestan Exist') })
+// Bakhsh.collection.insertMany(Bakhsh_init_Data.Bakhsh).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log(err, 'Bakhsh Exist') })
+// Dehestan_Shahr.collection.insertMany(Dehestan_Shahr_init_Data.Dehestan_Shahr).then((result) => { console.log('Dehestan_Shahr Initialized') }).catch((err) => { console.log(err, 'Dehestan_Shahr Exist') })
 Abadi.collection.insertMany(Abadi_init_Data.Abadi).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log(err, 'Abadi Exist') })
 
 module.export = {
