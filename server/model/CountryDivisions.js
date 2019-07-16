@@ -2,7 +2,6 @@ const { mongoose } = require('../db/mongoose');
 const path = require('path');
 const excelToJson = require('convert-excel-to-json');
 const { asyncForEach } = require('../utils/utils')
-
 const CountryDivisionCode = { type: String, required: true, alias: 'CDcode' }
 const family_count = { type: Number, required: true, alias: 'family_cnt' }
 const population_count = { type: Number, required: true, alias: 'population_cnt' }
@@ -341,11 +340,14 @@ Abadi_init_Data.Abadi.forEach((element) => {
 })
 
 //////////////////////////////////////////////////////////////////////////////////////
-Ostan.collection.insertMany(Ostan_init_Data.Ostan).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log(err, 'Ostan Exist') })
-Shahrestan.collection.insertMany(Shahrestan_init_Data.Shahrestan).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log(err, 'Shahrestan Exist') })
-Bakhsh.collection.insertMany(Bakhsh_init_Data.Bakhsh).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log(err, 'Bakhsh Exist') })
-Dehestan_Shahr.collection.insertMany(Dehestan_Shahr_init_Data.Dehestan_Shahr).then((result) => { console.log('Dehestan_Shahr Initialized') }).catch((err) => { console.log(err, 'Dehestan_Shahr Exist') })
-Abadi.collection.insertMany(Abadi_init_Data.Abadi).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log(err, 'Abadi Exist') })
+Ostan.collection.insertMany(Ostan_init_Data.Ostan).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log('Ostan Exist') })
+Shahrestan.collection.insertMany(Shahrestan_init_Data.Shahrestan).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log('Shahrestan Exist') })
+Bakhsh.collection.insertMany(Bakhsh_init_Data.Bakhsh).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log('Bakhsh Exist') })
+Dehestan_Shahr.collection.insertMany(Dehestan_Shahr_init_Data.Dehestan_Shahr).then((result) => { console.log('Dehestan_Shahr Initialized') }).catch((err) => { console.log('Dehestan_Shahr Exist') })
+Abadi.collection.insertMany(Abadi_init_Data.Abadi).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log('Abadi Exist') })
+
+//////////////////////////////////////////////////////////////////////////////////////
+Abadi.findOne({ Abadi_id: '0302020001026702' }).populate('ref_id').then((abadi) => { console.log(abadi) })
 
 module.export = {
     Ostan,
