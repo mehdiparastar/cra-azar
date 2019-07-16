@@ -3,40 +3,15 @@ const path = require('path');
 const excelToJson = require('convert-excel-to-json');
 const { asyncForEach } = require('../utils/utils')
 
-const CountryDivisionCode = {
-    type: String,
-    required: true,
-    alias: 'CDcode'
-}
+const CountryDivisionCode = { type: String, required: true, alias: 'CDcode' }
+const family_count = { type: Number, required: true, alias: 'family_cnt' }
+const population_count = { type: Number, required: true, alias: 'population_cnt' }
+const men_count = { type: Number, required: true, alias: 'men_cnt' }
+const women_count = { type: Number, required: true, alias: 'women_cnt' }
 
-const family_count = {
-    type: Number,
-    required: true,
-    alias: 'family_cnt'
-}
-
-const population_count = {
-    type: Number,
-    required: true,
-    alias: 'population_cnt'
-}
-
-const men_count = {
-    type: Number,
-    required: true,
-    alias: 'men_cnt'
-}
-
-const women_count = {
-    type: Number,
-    required: true,
-    alias: 'women_cnt'
-}
-
+//////////////////////////////////////////////////////////////////////////////////////
 let OstanSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Types.ObjectId
-    },
+    _id: mongoose.Types.ObjectId,
 
     Ostan_id: {
         type: String,
@@ -63,8 +38,10 @@ let OstanSchema = new mongoose.Schema({
 
     women_count: women_count
 })
+let Ostan = mongoose.model('Ostan', OstanSchema)
 
 let ShahrestanSchema = new mongoose.Schema({
+    _id: mongoose.Types.ObjectId,
 
     Shahrestan_id: {
         type: String,
@@ -89,10 +66,18 @@ let ShahrestanSchema = new mongoose.Schema({
 
     men_count: men_count,
 
-    women_count: women_count
+    women_count: women_count,
+
+    ref_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Ostan'
+    }
 })
+let Shahrestan = mongoose.model('Shahrestan', ShahrestanSchema)
 
 let BakhshSchema = new mongoose.Schema({
+    _id: mongoose.Types.ObjectId,
+
     Bakhsh_id: {
         type: String,
         required: true,
@@ -116,10 +101,19 @@ let BakhshSchema = new mongoose.Schema({
 
     men_count: men_count,
 
-    women_count: women_count
+    women_count: women_count,
+
+    ref_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Shahrestan'
+    }
+
 })
+let Bakhsh = mongoose.model('Bakhsh', BakhshSchema)
 
 let Dehestan_ShahrSchema = new mongoose.Schema({
+    _id: mongoose.Types.ObjectId,
+
     Dehestan_Shahr_id: {
         type: String,
         required: true,
@@ -147,10 +141,18 @@ let Dehestan_ShahrSchema = new mongoose.Schema({
 
     men_count: men_count,
 
-    women_count: women_count
+    women_count: women_count,
+
+    ref_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Bakhsh'
+    }
 })
+let Dehestan_Shahr = mongoose.model('Dehestan_Shahr', Dehestan_ShahrSchema)
 
 let AbadiSchema = new mongoose.Schema({
+    _id: mongoose.Types.ObjectId,
+
     Abadi_id: {
         type: String,
         required: true,
@@ -174,9 +176,16 @@ let AbadiSchema = new mongoose.Schema({
 
     men_count: men_count,
 
-    women_count: women_count
-})
+    women_count: women_count,
 
+    ref_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Dehestan_Shahr'
+    }
+})
+let Abadi = mongoose.model('Abadi', AbadiSchema)
+
+//////////////////////////////////////////////////////////////////////////////////////
 OstanSchema.statics.findOstan = function (Oid) {
     let thisOstan = this
     return thisOstan.findOne({ Ostan_id: Oid }).then((findedOstan) => {
@@ -217,12 +226,7 @@ AbadiSchema.statics.findAbadi = function (Oid, Shid, Bid, D_Shid, A_id) {
     })
 }
 
-let Ostan = mongoose.model('Ostan', OstanSchema)
-let Shahrestan = mongoose.model('Shahrestan', ShahrestanSchema)
-let Bakhsh = mongoose.model('Bakhsh', BakhshSchema)
-let Dehestan_Shahr = mongoose.model('Dehestan_Shahr', Dehestan_ShahrSchema)
-let Abadi = mongoose.model('Abadi', AbadiSchema)
-
+//////////////////////////////////////////////////////////////////////////////////////
 const Ostan_init_Data = excelToJson({
     sourceFile: path.join(__dirname, '../initializing/CountryDivision_Data_to_initializing/Ostan.xlsx'),
     header: { rows: 1 },
@@ -306,6 +310,7 @@ const Abadi_init_Data = excelToJson({
     }
 });
 
+//////////////////////////////////////////////////////////////////////////////////////
 console.log({
     'Ostan_init_Data': Ostan_init_Data.Ostan.length,
     'Shahrestan_init_Data': Shahrestan_init_Data.Shahrestan.length,
@@ -313,12 +318,33 @@ console.log({
     'Dehestan_Shahr_init_Data': Dehestan_Shahr_init_Data.Dehestan_Shahr.length,
     'Abadi_init_Data': Abadi_init_Data.Abadi.length,
 })
-Ostan_init_Data.Ostan.forEach((element) => { element._id = mongoose.Types.ObjectId(element._id) })
 
+//////////////////////////////////////////////////////////////////////////////////////
+Ostan_init_Data.Ostan.forEach((element) => {
+    element._id = mongoose.Types.ObjectId(element._id)
+})
+Shahrestan_init_Data.Shahrestan.forEach((element) => {
+    element._id = mongoose.Types.ObjectId(element._id)
+    element.ref_id = mongoose.Types.ObjectId(element.ref_id)
+})
+Bakhsh_init_Data.Bakhsh.forEach((element) => {
+    element._id = mongoose.Types.ObjectId(element._id)
+    element.ref_id = mongoose.Types.ObjectId(element.ref_id)
+})
+Dehestan_Shahr_init_Data.Dehestan_Shahr.forEach((element) => {
+    element._id = mongoose.Types.ObjectId(element._id)
+    element.ref_id = mongoose.Types.ObjectId(element.ref_id)
+})
+Abadi_init_Data.Abadi.forEach((element) => {
+    element._id = mongoose.Types.ObjectId(element._id)
+    element.ref_id = mongoose.Types.ObjectId(element.ref_id)
+})
+
+//////////////////////////////////////////////////////////////////////////////////////
 Ostan.collection.insertMany(Ostan_init_Data.Ostan).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log(err, 'Ostan Exist') })
-// Shahrestan.collection.insertMany(Shahrestan_init_Data.Shahrestan).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log(err, 'Shahrestan Exist') })
-// Bakhsh.collection.insertMany(Bakhsh_init_Data.Bakhsh).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log(err, 'Bakhsh Exist') })
-// Dehestan_Shahr.collection.insertMany(Dehestan_Shahr_init_Data.Dehestan_Shahr).then((result) => { console.log('Dehestan_Shahr Initialized') }).catch((err) => { console.log(err, 'Dehestan_Shahr Exist') })
+Shahrestan.collection.insertMany(Shahrestan_init_Data.Shahrestan).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log(err, 'Shahrestan Exist') })
+Bakhsh.collection.insertMany(Bakhsh_init_Data.Bakhsh).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log(err, 'Bakhsh Exist') })
+Dehestan_Shahr.collection.insertMany(Dehestan_Shahr_init_Data.Dehestan_Shahr).then((result) => { console.log('Dehestan_Shahr Initialized') }).catch((err) => { console.log(err, 'Dehestan_Shahr Exist') })
 Abadi.collection.insertMany(Abadi_init_Data.Abadi).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log(err, 'Abadi Exist') })
 
 module.export = {
