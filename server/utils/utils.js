@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 Array.prototype.unique = function () {
     var a = this.concat();
     for (var i = 0; i < a.length; ++i) {
@@ -15,7 +17,41 @@ let asyncForEach = async (array, callback) => {
         await callback(array[index], index, array);
     }
 }
+///////////////////////////////////////////////ایجاد ارتباط یک به چند و چند به یک بین دو جدول///////////////////////////////////////////////
+let One_to_Many_RelationShip = (One_list, Many_list, One_Model, Many_Model, One_Side_Many_field, Many_Side_One_field, One_Side_id_field, Many_side_id_field, first_slice_index, second_slice_index) => {
+    result = []
+    One_list.forEach((One) => {
+        new_One = new One_Model(One)
+        result.push(new_One)
+        _.find(result, One)[One_Side_Many_field] = []
+        Many_list.forEach((Many) => {
+            if (One[One_Side_id_field] === Many[Many_side_id_field].slice(first_slice_index, second_slice_index)) {
+                new_Many = new Many_Model(Many)
+                _.find(Many_list, Many)[Many_Side_One_field] = new_One._id
+                _.find(result, One)[One_Side_Many_field].push(new_Many)
+            }
+        })
+    })
+    return result
+}
+//                 مثال دستی از تابع بالا
+// shahrestans_init_Data.shahrestans.forEach((shahrestan) => {
+//     new_Shahrestans = new Shahrestans(shahrestan)
+//     shahrestan_dict.push(new_Shahrestans)
+//     _.find(shahrestan_dict, shahrestan).bakhshs = []
+//     bakhshs_init_Data.bakhshs.forEach((bakhsh) => {
+//         if (shahrestan.Shahrestan_id === bakhsh.Bakhsh_id.slice(0, 4)) {
+//             new_Bakhshs = new Bakhshs(bakhsh)
+//             new_Bakhshs.shahrestan = new_Shahrestans
+//             _.find(bakhshs_init_Data.bakhshs, bakhsh)['shahrestan'] = new_Shahrestans._id
+//             _.find(shahrestan_dict, shahrestan).bakhshs.push(new_Bakhshs)
+//         }
+//     })
+// })
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 module.exports = {
-    asyncForEach
+    asyncForEach,
+    One_to_Many_RelationShip
 }
