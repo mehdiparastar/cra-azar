@@ -1,10 +1,11 @@
+console.log('\n\n                               starting ...')
 const path = require('path');
-process.env.NODE_CONFID_DIR = path.join(__dirname, 'config');
+process.env.NODE_CONFIG_DIR = path.join(__dirname, 'config');
 const config = require('config');
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
-const winston = require('winston');
+// const winston = require('winston');
 const fs = require('fs');
 const _ = require('lodash');
 const persianDate = require('persian-date');
