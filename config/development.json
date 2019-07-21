@@ -1,0 +1,14 @@
+{
+    "Level": "development",
+    "PORT": 3000,
+    "MONGOURI": "mongodb://localhost:27017/cra_db",
+    "JWT_SECRET": "MEHDI",
+    "X_JWT_SECRET": {
+        "superuser": "MEHDI",
+        "admin": "fazeli",
+        "user": "user",
+        "post_pishkhan": "post_pishkhan",
+        "village_fix": "village_fix",
+        "village_mobile": "village_mobile"
+    }
+}
