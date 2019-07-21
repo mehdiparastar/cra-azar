@@ -1,3 +1,4 @@
+// require('../db/mongoose')
 const assert = require('assert')
 const path = require('path');
 const { User } = require('../model/user');
@@ -7,14 +8,15 @@ const config = require('config');
 console.log('Level: ', config.get('Level'))
 
 describe('Create test User', () => {
-    it('Create', () => {
+    it('Create', (done) => {
         let testUser = new User({
-            fullname: 'test testy',
-            email: 'test.name@gmail.com',
+            fullname: 'testone testy',
+            email: 'testttt.name@gmail.com',
             password: 'testtest',
             roles: ['admin', 'post_pishkhan_user']
         })
-        testUser.save()
+        testUser.save().then(() => { assert(testUser.isNew === false) })
+        done()
     })
 })
 

@@ -4,7 +4,7 @@
     "description": "",
     "main": "server/server.js",
     "scripts": {
-        "test": "SET NODE_ENV=test&&mocha server/**/*test.js",
+        "test": "SET NODE_ENV=test&&nodemon --exec \"mocha --timeout 10000 -R min server/**/*test.js\"",
         "start": "nodemon server/server.js"
     },
     "keywords": [],
