@@ -4,7 +4,7 @@
     "description": "",
     "main": "server/server.js",
     "scripts": {
-        "test": "mocha server",
+        "test": "SET NODE_ENV=test&&mocha server/**/*test.js",
         "start": "nodemon server/server.js"
     },
     "keywords": [],
@@ -17,6 +17,7 @@
         "config": "^3.1.0",
         "convert-excel-to-json": "^1.6.1",
         "express": "^4.17.1",
+        "global": "^4.4.0",
         "helmet": "^3.18.0",
         "joi": "^14.3.1",
         "jsonwebtoken": "^8.5.1",
@@ -25,8 +26,12 @@
         "mongodb": "^3.2.7",
         "mongoose": "^5.6.4",
         "morgan": "^1.9.1",
+        "nodemon": "^1.19.1",
         "persian-date": "^1.1.0",
         "validator": "^11.1.0",
         "winston": "^3.2.1"
+    },
+    "devDependencies": {
+        "cross-env": "^5.2.0"
     }
 }
