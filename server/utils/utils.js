@@ -18,23 +18,41 @@ let asyncForEach = async (array, callback) => {
     }
 }
 ///////////////////////////////////////////////ایجاد ارتباط یک به چند و چند به یک بین دو جدول///////////////////////////////////////////////
-let One_to_Many_RelationShip = (One_list, Many_list, One_Model, Many_Model, One_Side_Many_field, Many_Side_One_field, One_Side_id_field, Many_side_id_field, first_slice_index, second_slice_index) => {
+let One_to_Many_RelationShip = (One_side_object, Many_side_objects) => {
+    // Many_side_objects = [{
+    //     Many_side_data,
+    //     Many_side_Model,
+    //     One_Side_Many_field,
+    //     Many_side_id_field,
+    //     Many_side_first_slice_index,
+    //     Many_side_second_slice_index
+    // }]
+    // One_side_object = {
+    //     One_side_data,
+    //     One_side_Model,
+    //     Many_Side_One_field,
+    //     One_Side_id_field,
+    // }
+
     result = []
-    One_list.forEach((One) => {
-        new_One = new One_Model(One)
+    Many_list = []
+    One_side_object.One_side_data.forEach((One) => {
+        new_One = new One_side_object.One_side_Model(One)
         result.push(new_One)
-        
-        _.find(result, One)[One_Side_Many_field] = []
-        Many_list.forEach((Many) => {
-            if (One[One_Side_id_field] === Many[Many_side_id_field].slice(first_slice_index, second_slice_index)) {
-                new_Many = new Many_Model(Many)
-                _.find(Many_list, Many)[Many_Side_One_field] = new_One._id
-                _.find(result, One)[One_Side_Many_field].push(new_Many)
-            }
+
+        Many_side_objects.forEach((Many_side_object) => {
+            _.find(result, One)[Many_side_object.One_Side_Many_field] = []
+            Many_side_object.Many_side_data.forEach((Many) => {
+                if (One[One_side_object.One_Side_id_field] === Many[Many_side_object.Many_side_id_field].slice(Many_side_object.Many_side_first_slice_index, Many_side_object.Many_side_second_slice_index)) {
+                    new_Many = new Many_side_object.Many_side_Model(Many)
+                    _.find(Many_side_object.Many_side_data, Many)[One_side_object.Many_Side_One_field] = new_One._id
+                    _.find(result, One)[Many_side_object.One_Side_Many_field].push(new_Many)
+                    Many_list.push(Many)
+                }
+            })
         })
-        
     })
-    return result
+    return result, Many_list
 }
 //                 مثال دستی از تابع بالا
 // shahrestans_init_Data.shahrestans.forEach((shahrestan) => {

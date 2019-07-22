@@ -102,22 +102,86 @@ let shahrestan_dict = []
 let bakhsh_dict = []
 let dehestan_dict = []
 
-ostan_dict = One_to_Many_RelationShip(ostans_init_Data.ostans, shahrestans_init_Data.shahrestans, Ostans, Shahrestans, 'shahrestans', 'ostan', 'Ostan_id', 'Shahrestan_id', 0, 2)
-shahrestan_dict = One_to_Many_RelationShip(shahrestans_init_Data.shahrestans, bakhshs_init_Data.bakhshs, Shahrestans, Bakhshs, 'bakhshs', 'shahrestan', 'Shahrestan_id', 'Bakhsh_id', 0, 4)
-bakhsh_dict = One_to_Many_RelationShip(bakhshs_init_Data.bakhshs, shahrs_init_Data.shahrs, Bakhshs, Shahrs, 'shahrs', 'bakhsh', 'Bakhsh_id', 'Shahr_id', 0, 6)
-tmp_bakhsh = One_to_Many_RelationShip(bakhshs_init_Data.bakhshs, dehestans_init_Data.dehestans, Bakhshs, Dehestans, 'dehestans', 'bakhsh', 'Bakhsh_id', 'Dehestan_id', 0, 6)
-dehestan_dict = One_to_Many_RelationShip(dehestans_init_Data.dehestans, abadis_init_Data.abadis, Dehestans, Abadis, 'abadis', 'dehestan', 'Dehestan_id', 'Abadi_id', 0, 10)
-// console.log('*****************************', _.find(bakhsh_dict, { Bakhsh_id: '030303' }).dehestans)
-// console.log('*****************************', _.find(bakhsh_dict_2, { Bakhsh_id: '030303' }).dehestans)
+ostan_shahrestans_One_side_object = {
+    One_side_data: ostans_init_Data.ostans,
+    One_side_Model: Ostans,
+    Many_Side_One_field: 'ostan',
+    One_Side_id_field: 'Ostan_id',
+}
+ostan_shahrestans_Many_side_objects = [{
+    Many_side_data: shahrestans_init_Data.shahrestans,
+    Many_side_Model: Shahrestans,
+    One_Side_Many_field: 'shahrestans',
+    Many_side_id_field: 'Shahrestan_id',
+    Many_side_first_slice_index: 0,
+    Many_side_second_slice_index: 2
+}]
+
+shahrestan_bakhshs_One_side_object = {
+    One_side_data: shahrestans_init_Data.shahrestans,
+    One_side_Model: Shahrestans,
+    Many_Side_One_field: 'shahrestan',
+    One_Side_id_field: 'Shahrestan_id',
+}
+shahrestan_bakhshs_Many_side_objects = [{
+    Many_side_data: bakhshs_init_Data.bakhshs,
+    Many_side_Model: Bakhshs,
+    One_Side_Many_field: 'bakhshs',
+    Many_side_id_field: 'Bakhsh_id',
+    Many_side_first_slice_index: 0,
+    Many_side_second_slice_index: 4
+}]
+
+bakhsh_shahrs_and_dehestans_One_side_object = {
+    One_side_data: bakhshs_init_Data.bakhshs,
+    One_side_Model: Bakhshs,
+    Many_Side_One_field: 'bakhsh',
+    One_Side_id_field: 'Bakhsh_id',
+}
+bakhsh_shahrs_and_dehestans_Many_side_objects = [{
+    Many_side_data: shahrs_init_Data.shahrs,
+    Many_side_Model: Shahrs,
+    One_Side_Many_field: 'shahrs',
+    Many_side_id_field: 'Shahr_id',
+    Many_side_first_slice_index: 0,
+    Many_side_second_slice_index: 6
+}, {
+    Many_side_data: dehestans_init_Data.dehestans,
+    Many_side_Model: Dehestans,
+    One_Side_Many_field: 'dehestans',
+    Many_side_id_field: 'Dehestan_id',
+    Many_side_first_slice_index: 0,
+    Many_side_second_slice_index: 6
+}]
+
+dehestan_abadis_and_dehestans_One_side_object = {
+    One_side_data: dehestans_init_Data.dehestans,
+    One_side_Model: Dehestans,
+    Many_Side_One_field: 'dehestan',
+    One_Side_id_field: 'Dehestan_id',
+}
+dehestan_abadis_and_dehestans_Many_side_objects = [{
+    Many_side_data: abadis_init_Data.abadis,
+    Many_side_Model: Abadis,
+    One_Side_Many_field: 'abadis',
+    Many_side_id_field: 'Abadi_id',
+    Many_side_first_slice_index: 0,
+    Many_side_second_slice_index: 10
+}]
+
+ostan_dict, shahrestans_many = One_to_Many_RelationShip(ostan_shahrestans_One_side_object, ostan_shahrestans_Many_side_objects)
+shahrestan_dict = One_to_Many_RelationShip(shahrestan_bakhshs_One_side_object, shahrestan_bakhshs_Many_side_objects)
+bakhsh_dict = One_to_Many_RelationShip(bakhsh_shahrs_and_dehestans_One_side_object, bakhsh_shahrs_and_dehestans_Many_side_objects)
+dehestan_dict = One_to_Many_RelationShip(dehestan_abadis_and_dehestans_One_side_object, dehestan_abadis_and_dehestans_Many_side_objects)
+
 
 Promise.all([
-    Ostans.collection.insertMany(ostan_dict).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log('Ostan Exist') }),
-    Shahrestans.collection.insertMany(shahrestan_dict).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log('Shahrestan Exist') }),
-    Bakhshs.collection.insertMany(bakhsh_dict).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log('Bakhsh Exist') }),
-    // Bakhshs.collection.insertMany(bakhsh_dict).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log('Bakhsh Exist') }),
+    Abadis.collection.insertMany(abadis_init_Data.abadis).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log('Abadi Exist') }),
     Dehestans.collection.insertMany(dehestan_dict).then((result) => { console.log('Dehestan Initialized') }).catch((err) => { console.log('Dehestan Exist') }),
     Shahrs.collection.insertMany(shahrs_init_Data.shahrs).then((result) => { console.log('Shahr Initialized') }).catch((err) => { console.log('Shahr Exist') }),
-    Abadis.collection.insertMany(abadis_init_Data.abadis).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log('Abadi Exist') }),
+    Bakhshs.collection.insertMany(bakhsh_dict).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log('Bakhsh Exist') }),
+    Shahrestans.collection.insertMany(shahrestan_dict).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log('Shahrestan Exist') }),
+    Ostans.collection.insertMany(ostan_dict).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log('Ostan Exist') }),
 ]).then(() => console.log(' --***-- country division initializing finished --***-- ')).catch((err) => console.log(err))
 
 
