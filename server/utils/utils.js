@@ -23,6 +23,7 @@ let One_to_Many_RelationShip = (One_list, Many_list, One_Model, Many_Model, One_
     One_list.forEach((One) => {
         new_One = new One_Model(One)
         result.push(new_One)
+        
         _.find(result, One)[One_Side_Many_field] = []
         Many_list.forEach((Many) => {
             if (One[One_Side_id_field] === Many[Many_side_id_field].slice(first_slice_index, second_slice_index)) {
@@ -31,6 +32,7 @@ let One_to_Many_RelationShip = (One_list, Many_list, One_Model, Many_Model, One_
                 _.find(result, One)[One_Side_Many_field].push(new_Many)
             }
         })
+        
     })
     return result
 }

@@ -7,12 +7,13 @@ mongoose.connection
     .on('error', (error) => console.warn('Warning', error))
 mongoose.set('useCreateIndex', true);
 
-beforeEach((done) => {
-    mongoose.connection.collections.users.drop(() => {
-        done();
+if (config.get('Level') === 'test') {
+    beforeEach((done) => {
+        mongoose.connection.collections.users.drop(() => {
+            done();
+        });
     });
-});
-
+}
 module.exports = {
     mongoose
 };

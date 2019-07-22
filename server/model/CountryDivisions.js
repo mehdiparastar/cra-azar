@@ -10,18 +10,16 @@ const women_count = { type: Number, required: true, alias: 'women_cnt' }
 let AbadisSchema = new mongoose.Schema({
     Abadi_id: { type: String, required: true, unique: true },
     Abadi_name: { type: String, required: true },
-    CountryDivisionCode: CountryDivisionCode,
     family_count: family_count,
     population_count: population_count,
     men_count: men_count,
     women_count: women_count,
-    shahr: { type: mongoose.Schema.Types.ObjectId, ref: 'shahrs' }
+    dehestan: { type: mongoose.Schema.Types.ObjectId, ref: 'dehestans' }
 })
 
-let ShahrsSchema = new mongoose.Schema({
-    Shahr_id: { type: String, required: true, unique: true },
-    Shahr_name: { type: String, required: true },
-    CountryDivisionCode: CountryDivisionCode,
+let DehestansSchema = new mongoose.Schema({
+    Dehestan_id: { type: String, required: true, unique: true },
+    Dehestan_name: { type: String, required: true },
     family_count: family_count,
     population_count: population_count,
     men_count: men_count,
@@ -30,22 +28,31 @@ let ShahrsSchema = new mongoose.Schema({
     bakhsh: { type: mongoose.Schema.Types.ObjectId, ref: 'bakhshs' }
 })
 
+let ShahrsSchema = new mongoose.Schema({
+    Shahr_id: { type: String, required: true, unique: true },
+    Shahr_name: { type: String, required: true },
+    family_count: family_count,
+    population_count: population_count,
+    men_count: men_count,
+    women_count: women_count,
+    bakhsh: { type: mongoose.Schema.Types.ObjectId, ref: 'bakhshs' }
+})
+
 let BakhshsSchema = new mongoose.Schema({
     Bakhsh_id: { type: String, required: true, unique: true },
     Bakhsh_name: { type: String, required: true },
-    CountryDivisionCode: CountryDivisionCode,
     family_count: family_count,
     population_count: population_count,
     men_count: men_count,
     women_count: women_count,
     shahrs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'shahrs' }],
+    dehestans: [{ type: mongoose.Schema.Types.ObjectId, ref: 'dehestans' }],
     shahrestan: { type: mongoose.Schema.Types.ObjectId, ref: 'shahrestans' }
 })
 
 let ShahrestansSchema = new mongoose.Schema({
     Shahrestan_id: { type: String, required: true, unique: true },
     Shahrestan_name: { type: String, required: true },
-    CountryDivisionCode: CountryDivisionCode,
     family_count: family_count,
     population_count: population_count,
     men_count: men_count,
@@ -57,7 +64,6 @@ let ShahrestansSchema = new mongoose.Schema({
 let OstansSchema = new mongoose.Schema({
     Ostan_id: { type: String, required: true, unique: true },
     Ostan_name: { type: String, required: true },
-    CountryDivisionCode: CountryDivisionCode,
     family_count: family_count,
     population_count: population_count,
     men_count: men_count,
@@ -66,6 +72,7 @@ let OstansSchema = new mongoose.Schema({
 })
 
 let Abadis = mongoose.model('abadis', AbadisSchema)
+let Dehestans = mongoose.model('dehestans', DehestansSchema)
 let Shahrs = mongoose.model('shahrs', ShahrsSchema)
 let Bakhshs = mongoose.model('bakhshs', BakhshsSchema)
 let Shahrestans = mongoose.model('shahrestans', ShahrestansSchema)
@@ -77,6 +84,7 @@ module.exports = {
     Shahrestans,
     Bakhshs,
     Shahrs,
+    Dehestans,
     Abadis
 }
 
