@@ -94,43 +94,84 @@ const abadis_init_Data = excelToJson({
         'F': '{{F1}}'
     }
 });
+ostans_list = []
+shahrestans_list = []
+bakhshs_list = []
+shahrs_list = []
+dehestans_list = []
+abadis_list = []
 
 ostans_init_Data.ostans.forEach(ostan => {
     new_ostan = new Ostans(ostan)
+
     shahrestans_init_Data.shahrestans.forEach(shahrestan => {
-        new_shahrestan = new Shahrestans(shahrestan)
-        new_ostan.shahrestans.push(new_shahrestan)
-        bakhshs_init_Data.bakhshs.forEach(bakhsh => {
-            new_bakhsh = new Bakhshs(bakhsh)
-            new_shahrestan.bakhshs.push(new_bakhsh)
-            shahrs_init_Data.shahrs.forEach(shahr=>{
-                new_shahr=new Shahrs(shahr)
-                new_bakhsh.shahrs.push(new_shahr)
-                Promise.all([
-                    new_ostan.save(),
-                    new_shahrestan.save(),
-                    new_bakhsh.save(),
-                    new_shahr.save()
-                ])
-            dehestans_init_Data.dehestans.forEach(dehestan=>{
-                new_dehestan=new Dehestans(dehestan)
-                new_bakhsh.dehestans.push(new_dehestan)
-                abadis_init_Data.abadis.forEach(abadi=>{
-                    new_abadi= new Abadis(abadi)
-                    new_dehestan.abadis.push(new_abadi)
-                    Promise.all([
-                        new_ostan.save(),
-                        new_shahrestan.save(),
-                        new_bakhsh.save(),
-                        new_dehestan.save(),
-                        new_abadi.save()
-                    ])
-                })
+        if (new_ostan.Ostan_id === shahrestan.Shahrestan_id.slice(0, 2)) {
+            new_shahrestan = new Shahrestans(shahrestan)
+            new_ostan.shahrestans.push(new_shahrestan)
+
+            bakhshs_init_Data.bakhshs.forEach(bakhsh => {
+                if (new_shahrestan.shahrestan_id === bakhsh.Bakhsh_id.slice(0, 4)) {
+                    new_bakhsh = new Bakhshs(bakhsh)
+                    new_shahrestan.bakhshs.push(new_bakhsh)
+                    shahrs_init_Data.shahrs.forEach(shahr => {
+                        if (new_bakhsh.Bakhsh_id === shahr.Shahr_id.slice(0, 6)) {
+                            new_shahr = new Shahrs(shahr)
+                            new_bakhsh.shahrs.push(new_shahr)
+                            shahrs_list.push(new_shahr)
+
+                            // Promise.all([
+                            //     new_ostan.save(),
+                            //     new_shahrestan.save(),
+                            //     new_bakhsh.save(),
+                            //     new_shahr.save()
+                            // ])
+                        }
+                    })
+                    dehestans_init_Data.dehestans.forEach(dehestan => {
+                        if (new_bakhsh.Bakhsh_id === dehestan.Dehestan_id.slice(0, 10)) {
+                            new_dehestan = new Dehestans(dehestan)
+                            new_bakhsh.dehestans.push(new_dehestan)
+                            abadis_init_Data.abadis.forEach(abadi => {
+                                if (new_dehestan.Dehestan_id === abadi.Abadi_id) {
+                                    new_abadi = new Abadis(abadi)
+                                    new_dehestan.abadis.push(new_abadi)
+                                    abadis_list.push(new_abadi)
+
+                                    // Promise.all([
+                                    //     new_ostan.save(),
+                                    //     new_shahrestan.save(),
+                                    //     new_bakhsh.save(),
+                                    //     new_dehestan.save(),
+                                    //     new_abadi.save()
+                                    // ])
+                                }
+                            })
+
+                            dehestans_list.push(new_dehestan)
+                        }
+                    })
+
+                    bakhshs_list.push(new_bakhsh)
+                }
             })
-            })
-        })
+
+            shahrestans_list.push(new_shahrestan)
+        }
     })
+
+    ostans_list.push(new_ostan)
 });
+
+
+Promise.all([
+    console.log(' starting ...'),
+    Ostans.collection.insertMany(ostans_list).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log('Ostan Exist') }),
+    Shahrestans.collection.insertMany(shahrestans_list).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log('Shahrestan Exist') }),
+    Bakhshs.collection.insertMany(bakhshs_list).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log(err, 'Bakhsh Exist') }),
+    Shahrs.collection.insertMany(shahrs_list).then((result) => { console.log('Shahr Initialized') }).catch((err) => { console.log('Shahr Exist') }),
+    Dehestans.collection.insertMany(dehestans_list).then((result) => { console.log('Dehestan Initialized') }).catch((err) => { console.log('Dehestan Exist') }),
+    Abadis.collection.insertMany(abadis_list).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log('Abadi Exist') }),
+]).then(() => console.log(' --***-- country division initializing finished --***-- ')).catch((err) => console.log(err))
 
 //////////////////////////////////////ایجاد ارتباط بین جداول تقسیمات کشوری و ذخیره در پایگاه داده////////////////////////////////////
 
@@ -213,12 +254,12 @@ ostans_init_Data.ostans.forEach(ostan => {
 
 
 // Promise.all([
-    // Abadis.collection.insertMany(abadis_init_Data.abadis).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log('Abadi Exist') }),
-    // Dehestans.collection.insertMany(dehestan_dict).then((result) => { console.log('Dehestan Initialized') }).catch((err) => { console.log('Dehestan Exist') }),
-    // Shahrs.collection.insertMany(shahrs_init_Data.shahrs).then((result) => { console.log('Shahr Initialized') }).catch((err) => { console.log('Shahr Exist') }),
-    // Bakhshs.collection.insertMany(bakhsh_dict).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log('Bakhsh Exist') }),
-    // Shahrestans.collection.insertMany(shahrestan_dict).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log('Shahrestan Exist') }),
-    // Ostans.collection.insertMany(ostan_dict).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log('Ostan Exist') }),
+//     Abadis.collection.insertMany(abadis_init_Data.abadis).then((result) => { console.log('Abadi Initialized') }).catch((err) => { console.log('Abadi Exist') }),
+//     Dehestans.collection.insertMany(dehestan_dict).then((result) => { console.log('Dehestan Initialized') }).catch((err) => { console.log('Dehestan Exist') }),
+//     Shahrs.collection.insertMany(shahrs_init_Data.shahrs).then((result) => { console.log('Shahr Initialized') }).catch((err) => { console.log('Shahr Exist') }),
+//     Bakhshs.collection.insertMany(bakhsh_dict).then((result) => { console.log('Bakhsh Initialized') }).catch((err) => { console.log('Bakhsh Exist') }),
+//     Shahrestans.collection.insertMany(shahrestan_dict).then((result) => { console.log('Shahrestan Initialized') }).catch((err) => { console.log('Shahrestan Exist') }),
+//     Ostans.collection.insertMany(ostan_dict).then((result) => { console.log('Ostan Initialized') }).catch((err) => { console.log('Ostan Exist') }),
 // ]).then(() => console.log(' --***-- country division initializing finished --***-- ')).catch((err) => console.log(err))
 
 
