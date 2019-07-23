@@ -47,7 +47,7 @@ let One_to_Many_RelationShip = (One_side_object, Many_side_objects) => {
                     new_Many = new Many_side_object.Many_side_Model(Many)
                     _.find(Many_side_object.Many_side_data, Many)[One_side_object.Many_Side_One_field] = new_One._id
                     _.find(result, One)[Many_side_object.One_Side_Many_field].push(new_Many)
-                    Many_list.push(Many)
+                    Many_list.push(new_Many)
                 }
             })
         })
