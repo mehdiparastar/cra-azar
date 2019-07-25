@@ -16,14 +16,13 @@ const { serverStatusLogger } = require('./middleware/server_status_logger_with_w
 const { User } = require('./model/user');
 const app = express();
 const requestLogger_with_morgan = fs.createWriteStream(path.join(__dirname, 'log/requests.log'));
+const { Ostans, Shahrestans, Bakhshs, Shahrs, Dehestans, Abadis } = require('./model/CountryDivisions');
 
 app.use(express.json());
-
 app.use(helmet());
-
 app.use(morgan('combined', { stream: requestLogger_with_morgan }));
 
-require('../server/initializing/initializing')
+// require('../server/initializing/initializing')
 
 app.post('/api/login', async (req, res) => {
     try {

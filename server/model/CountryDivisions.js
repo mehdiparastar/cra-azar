@@ -71,6 +71,7 @@ let OstansSchema = new mongoose.Schema({
     shahrestans: [{ type: mongoose.Schema.Types.ObjectId, ref: 'shahrestans' }]
 })
 
+
 let Abadis = mongoose.model('abadis', AbadisSchema)
 let Dehestans = mongoose.model('dehestans', DehestansSchema)
 let Shahrs = mongoose.model('shahrs', ShahrsSchema)
@@ -163,4 +164,7 @@ module.exports = {
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-// Abadi.findOne({ Abadi_id: '0302020001026702' }).populate('ref_id').then((abadi) => { console.log(abadi) })
+// Abadis.findOne({ Abadi_id: '0302020001026702' }).populate('dehestan').then((abadi) => { console.log(abadi.Abadi_name, abadi.dehestan.Dehestan_name) })
+
+// Dehestans.findOne({ Dehestan_id: '0302020001' }).populate('abadis').then((dehestan) => { dehestan.abadis.forEach(abadi => console.log(abadi.Abadi_name)) })
+
