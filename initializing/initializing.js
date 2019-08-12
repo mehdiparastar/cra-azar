@@ -7,9 +7,9 @@ const { Ostans, Shahrestans, Bakhshs, Shahrs, Dehestans, Abadis } = require('../
 /////////////////////////////////////ایجاد یوزر اولیه در دیتابیس/////////////////////////////////////////////////////
 
 let testUser = new User({
-    fullname: 'name family',
-    email: 'family.name@gmail.com',
-    password: 'fmfmfm',
+    fullname: 'mehdi parastar',
+    email: 'parastar.mehdi@gmail.com',
+    password: '123456',
     roles: ['admin', 'post_pishkhan_user']
 })
 Promise.all([
@@ -19,7 +19,7 @@ Promise.all([
 //////////////////////////////خواندن اطلاعات تقسیمات کشوری از جداول اکسل و ذخیره در قالب جی سان///////////////////////////////////////////
 
 const ostans_init_Data = excelToJson({
-    sourceFile: path.join(__dirname, '../initializing/CountryDivision_Data_to_initializing/ostans.xlsx'),
+    sourceFile: path.join(__dirname, './CountryDivision_Data_to_initializing/ostans.xlsx'),
     header: { rows: 1 },
     columnToKey: {
         'A': '{{A1}}',
@@ -32,7 +32,7 @@ const ostans_init_Data = excelToJson({
 });
 
 const shahrestans_init_Data = excelToJson({
-    sourceFile: path.join(__dirname, '../initializing/CountryDivision_Data_to_initializing/shahrestans.xlsx'),
+    sourceFile: path.join(__dirname, './CountryDivision_Data_to_initializing/shahrestans.xlsx'),
     header: { rows: 1 },
     columnToKey: {
         'A': '{{A1}}',
@@ -45,7 +45,7 @@ const shahrestans_init_Data = excelToJson({
 });
 
 const bakhshs_init_Data = excelToJson({
-    sourceFile: path.join(__dirname, '../initializing/CountryDivision_Data_to_initializing/bakhshs.xlsx'),
+    sourceFile: path.join(__dirname, './CountryDivision_Data_to_initializing/bakhshs.xlsx'),
     header: { rows: 1 },
     columnToKey: {
         'A': '{{A1}}',
@@ -58,7 +58,7 @@ const bakhshs_init_Data = excelToJson({
 });
 
 const shahrs_init_Data = excelToJson({
-    sourceFile: path.join(__dirname, '../initializing/CountryDivision_Data_to_initializing/shahrs.xlsx'),
+    sourceFile: path.join(__dirname, './CountryDivision_Data_to_initializing/shahrs.xlsx'),
     header: { rows: 1 },
     columnToKey: {
         'A': '{{A1}}',
@@ -71,7 +71,7 @@ const shahrs_init_Data = excelToJson({
 });
 
 const dehestans_init_Data = excelToJson({
-    sourceFile: path.join(__dirname, '../initializing/CountryDivision_Data_to_initializing/dehestans.xlsx'),
+    sourceFile: path.join(__dirname, './CountryDivision_Data_to_initializing/dehestans.xlsx'),
     header: { rows: 1 },
     columnToKey: {
         'A': '{{A1}}',
@@ -84,7 +84,7 @@ const dehestans_init_Data = excelToJson({
 });
 
 const abadis_init_Data = excelToJson({
-    sourceFile: path.join(__dirname, '../initializing/CountryDivision_Data_to_initializing/abadis.xlsx'),
+    sourceFile: path.join(__dirname, './CountryDivision_Data_to_initializing/abadis.xlsx'),
     header: { rows: 1 },
     columnToKey: {
         'A': '{{A1}}',

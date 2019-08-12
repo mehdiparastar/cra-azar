@@ -4,8 +4,8 @@
     "description": "",
     "main": "server/server.js",
     "scripts": {
-        "test": "SET NODE_ENV=test&&nodemon --exec \"mocha --timeout 10000 -R min server/**/*test.js\"",
-        "start": "nodemon --max-old-space-size=3072 server/server.js"
+        "test": "SET NODE_ENV=test&&nodemon --exec \"mocha --timeout 10000 -R min **/*test.js\"",
+        "start": "nodemon --max-old-space-size=3072 server.js"
     },
     "keywords": [],
     "author": "",

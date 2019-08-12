@@ -1,6 +1,6 @@
 {
     "Level": "development",
-    "PORT": 3000,
+    "PORT": 3900,
     "MONGOURI": "mongodb://localhost:27017/cra_db",
     "JWT_SECRET": "MEHDI",
     "X_JWT_SECRET": {

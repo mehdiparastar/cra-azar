@@ -1,9 +1,11 @@
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const Joi = require('joi');
 const _ = require('lodash');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const { mongoose } = require('../db/mongoose');
+
 
 const tokenOptions = {
     type: String,
@@ -60,13 +62,15 @@ UserSchema.methods.toJSON = function () {
     return _.pick(userObject, ['_id', 'fullname', 'email', 'roles'])
 }
 
-UserSchema.statics.findByCredentials = function (email, password) {
+UserSchema.statics.findByCredentials = function (req) {
     let thisUser = this;
-    return thisUser.findOne({ email: email }).then(findedUser => {
+    const body = _.pick(req.body, ['email', 'password']);
+    
+    return thisUser.findOne({ email: body.email }).then(findedUser => {
         if (!findedUser) { Promise.reject(); }
 
         return new Promise((resolve, reject) => {
-            bcrypt.compare(password, findedUser.password, (err, res) => {
+            bcrypt.compare(body.password, findedUser.password, (err, res) => {
                 if (res) {
                     resolve(findedUser);
                 } else {
@@ -104,6 +108,21 @@ UserSchema.statics.findByToken = function (token) {
         'tokens.access': decoded.access
     })
 
+}
+
+UserSchema.statics.validateLogin = function (req) {
+    const joiSchema = {
+        email: Joi.string()
+            .min(5)
+            .max(255)
+            .required()
+            .email(),
+        password: Joi.string()
+            .min(6)
+            .max(255)
+            .required()
+    };
+    return Joi.validate(req.body, joiSchema);
 }
 
 UserSchema.pre('save', function (next) {

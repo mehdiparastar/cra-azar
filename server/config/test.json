@@ -1,5 +1,0 @@
-{
-    "Level": "test",
-    "PORT": 3000,
-    "MONGOURI": "mongodb://localhost:27017/cra_db_test"
-}
