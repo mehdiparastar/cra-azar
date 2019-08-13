@@ -1,23 +1,27 @@
 console.log('\n\n                               starting ...')
 
 const path = require('path');
-process.env.NODE_CONFIG_DIR = path.join(__dirname, 'config');
 const config = require('config');
 
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
+
 const fs = require('fs');
+
 const _ = require('lodash');
-// const persianDate = require('persian-date');
+
 const { accessControl } = require('./middleware/control_accesses');
 const { authenticate } = require('./middleware/authenticate');
+
 const { serverStatusLogger } = require('./middleware/server_status_logger_with_winston');
+const requestLogger_with_morgan = fs.createWriteStream(path.join(__dirname, 'log/requests.log'));
+
 const { User } = require('./model/user');
+
 const app = express();
 const router = express.Router();
 
-const requestLogger_with_morgan = fs.createWriteStream(path.join(__dirname, 'log/requests.log'));
 const { Ostans, Shahrestans, Bakhshs, Shahrs, Dehestans, Abadis } = require('./model/CountryDivisions');
 
 const login = require('./routes/login');
@@ -30,8 +34,6 @@ app.use(helmet());
 app.use(morgan('combined', { stream: requestLogger_with_morgan }));
 
 // require('./initializing/initializing')
-
-
 
 app.use('/api/login', login);
 // app.use('/api/common', commons)
