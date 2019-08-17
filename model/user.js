@@ -93,6 +93,7 @@ UserSchema.methods.generateAuthToken = function () {
 };
 
 UserSchema.statics.findByToken = function (token) {
+    console.log(token)
     let thisUser = this
     let decoded
 

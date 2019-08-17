@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
 
         const token = await findedUser.generateAuthToken();
 
-        res.header('x-auth', token).status(200).send(token);
+        res.header('x-auth-token', token).status(200).send(token);
 
     } catch (e) {
         res.status(400).json({

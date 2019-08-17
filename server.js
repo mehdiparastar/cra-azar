@@ -32,6 +32,8 @@ app.use(setHeaders);
 
 app.use(helmet());
 app.use(morgan('combined', { stream: requestLogger_with_morgan }));
+app.use(morgan('tiny'));
+
 
 // require('./initializing/initializing')
 
