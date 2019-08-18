@@ -93,7 +93,6 @@ UserSchema.methods.generateAuthToken = function () {
 };
 
 UserSchema.statics.findByToken = function (token) {
-    console.log(token)
     let thisUser = this
     let decoded
 
@@ -102,7 +101,6 @@ UserSchema.statics.findByToken = function (token) {
     } catch (e) {
         return Promise.reject()
     }
-
     return thisUser.findOne({
         _id: decoded._id,
         'tokens.token': token,
@@ -141,7 +139,6 @@ UserSchema.pre('save', function (next) {
 });
 
 let User = mongoose.model('User', UserSchema);
-
 
 
 module.exports = {
