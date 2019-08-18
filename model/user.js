@@ -7,52 +7,18 @@ const jwt = require('jsonwebtoken');
 const { mongoose } = require('../db/mongoose');
 
 
-const tokenOptions = {
-    type: String,
-    required: true
-};
+const tokenOptions = { type: String, required: true };
 
 let UserSchema = new mongoose.Schema({
-    fullname: {
-        type: String,
-        required: true,
-        minlength: 3,
-        trim: true
-    },
 
-    email: {
-        type: String,
-        required: true,
-        minlength: 6,
-        unique: true,
-        validate: {
-            validator: validator.isEmail,
-            message: `{value} is not valid email`
-        }
-    },
-
-    password: {
-        type: String,
-        required: true,
-        minlength: 6
-    },
-
-    tokens: [
-        {
-            _id: false,
-            access: tokenOptions,
-            token: tokenOptions
-        }
-    ],
-
-    roles: [
-        {
-            _id: false,
-            type: String,
-            required: true,
-            minlength: 3
-        }
-    ]
+    fullname: { type: String, required: true, minlength: 3, trim: true },
+    email: { type: String, required: true, minlength: 6, unique: true, validate: { validator: validator.isEmail, message: `{value} is not valid email` } },
+    password: { type: String, required: true, minlength: 6 },
+    tokens: [{ _id: false, access: tokenOptions, token: tokenOptions }],
+    roles: [{ _id: false, type: String, required: true, minlength: 3 }],
+    useravatar: {
+        type: Buffer
+    }
 });
 
 UserSchema.methods.toJSON = function () {
@@ -65,7 +31,7 @@ UserSchema.methods.toJSON = function () {
 UserSchema.statics.findByCredentials = function (req) {
     let thisUser = this;
     const body = _.pick(req.body, ['email', 'password']);
-    
+
     return thisUser.findOne({ email: body.email }).then(findedUser => {
         if (!findedUser) { Promise.reject(); }
 
@@ -142,5 +108,5 @@ let User = mongoose.model('User', UserSchema);
 
 
 module.exports = {
-    User    
+    User
 };
