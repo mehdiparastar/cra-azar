@@ -6,6 +6,7 @@ const { User } = require('../model/user');
 
 
 router.post('/createuser', auth, async (req, res) => {
+    console.log(req.body)
     const { error } = User.validate(req.body);
     if (error) return res.status(400).send(error.details[0].message)
     let user = await User.findOne({ email: req.body.email })
