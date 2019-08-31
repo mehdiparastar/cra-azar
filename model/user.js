@@ -18,7 +18,7 @@ let UserSchema = new mongoose.Schema({
     tokens: [{ _id: false, access: tokenOptions, token: tokenOptions }],
     roles: [{ _id: false, type: String, required: true, minlength: 3 }],
     preview: {
-        type: Buffer
+        type:Buffer
     }
 });
 
@@ -87,6 +87,18 @@ UserSchema.statics.validateLogin = function (req) {
             .min(6)
             .max(255)
             .required()
+    };
+    return Joi.validate(req.body, joiSchema);
+}
+
+UserSchema.statics.validateCreateUser = function (req) {
+    const joiSchema = {
+        firstname: Joi.string().min(3).max(255).required(),
+        lastname: Joi.string().min(3).max(255).required(),
+        email: Joi.string().min(5).max(255).required().email(),
+        password: Joi.string().min(6).max(12).required(),
+        roles: Joi.array().items(Joi.string()).min(1).required(),
+        preview: Joi.string().required()
     };
     return Joi.validate(req.body, joiSchema);
 }
