@@ -18,7 +18,7 @@ let UserSchema = new mongoose.Schema({
     tokens: [{ _id: false, access: tokenOptions, token: tokenOptions }],
     roles: [{ _id: false, type: String, required: true, minlength: 3 }],
     preview: {
-        type:Buffer
+        type:String
     }
 });
 
