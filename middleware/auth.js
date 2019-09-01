@@ -14,9 +14,7 @@ const auth = async(req, res, next) => {
         }
         req.token = token
         next()
-    }).catch((err) => {
-        res.status(401).send(err)
-    })
+    }).catch(err => res.status(401).send(err))
 }
 
 module.exports = auth

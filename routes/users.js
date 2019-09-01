@@ -5,17 +5,33 @@ const auth = require('../middleware/auth');
 const { User } = require('../model/user');
 
 
-router.post('/createuser', auth, async (req, res) => {
-    const { error } = User.validateCreateUser(req.body);
-    if (error) return res.status(400).send(error.details[0].message)
-    let user = await User.findOne({ email: req.body.email })
-    if (user)
-        return res.status(409).send({ error: 'کاربر از قبل تعریف شده است.' })
-    else {
+router.post('/createuser', async (req, res) => {
+    try {
+        const { error } = User.validateCreateUser(req.body);
+        if (error) {
+            throw new Error('Validation Failed.');
+        }
+        // if (error) return res.status(400).send(error.details[0].message)
+
+    } catch (ex) { return res.status(400).send(error.details[0].message) }
+
+    try {
+        let user = await User.findOne({ email: req.body.email })
+
+        if (user) {
+            throw new Error('duplicate Error')
+        }
         user = new User(_.pick(req.body, ['firstname', 'lastname', 'email', 'password', 'preview', 'roles']))
         await user.save();
         return res.status(200).send(_.pick(user, ['_id', 'firstname', 'lastname', 'email', 'roles']))
-    }
+        
+        // if (user) return res.status(409).send({ error: 'کاربر از قبل تعریف شده است.' })
+        // else {
+        //     user = new User(_.pick(req.body, ['firstname', 'lastname', 'email', 'password', 'preview', 'roles']))
+        //     await user.save();
+        //     return res.status(200).send(_.pick(user, ['_id', 'firstname', 'lastname', 'email', 'roles']))
+        // }
+    } catch (ex) { return res.status(409).send({ error: 'کاربر از قبل تعریف شده است.' }) }
 });
 
 
