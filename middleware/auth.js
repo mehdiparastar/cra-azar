@@ -8,7 +8,8 @@ const auth = async(req, res, next) => {
         }
         req.user = {
             _id: user._id,
-            fullname: user.fullname,
+            firstname: user.firstname,
+            lastname:user.lastname,
             email: user.email,
             roles: user.roles
         }

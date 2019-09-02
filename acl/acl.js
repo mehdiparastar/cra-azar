@@ -2,6 +2,7 @@ const rolesPermissions = [
     {
         role: 'admin',
         permission: [
+            'admin',
             'post_pishkhan',
             'village_fix_wired',
             'village_fix_wireless',
@@ -30,22 +31,33 @@ const rolesPermissions = [
     }
 ];
 
+const adminPermission = [{ '/api/users/createuser': 'POST' }]
+const commonPermission = [{ '/api/users/userfirstname': 'GET' }, { '/api/users/useravatar': 'GET' }]
+const post_pishkhanPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const village_fix_wiredPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const village_fix_wirelessPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const village_mobilePermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+
 const permissionAPIandMethod = [
     {
+        permission: 'admin',
+        whitelist: adminPermission.concat(commonPermission, post_pishkhanPermission, village_fix_wiredPermission, village_fix_wirelessPermission, village_mobilePermission)
+    },
+    {
         permission: 'post_pishkhan',
-        whitelist: [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+        whitelist: commonPermission.concat(post_pishkhanPermission)
     },
     {
         permission: 'village_fix_wired',
-        whitelist: [{ '/api/test3': 'POST' }, { '/api/test3': 'GET' }]
+        whitelist: commonPermission.concat(village_fix_wiredPermission)
     },
     {
         permission: 'village_fix_wireless',
-        whitelist: [{ '/api/test4': 'POST' }, { '/api/test4': 'GET' }]
+        whitelist: commonPermission.concat(village_fix_wirelessPermission)
     },
     {
         permission: 'village_mobile',
-        whitelist: [{ '/api/test5': 'POST' }, { '/api/test5': 'GET' }]
+        whitelist: commonPermission.concat(village_mobilePermission)
     }
 ];
 
