@@ -13,16 +13,19 @@ router.post('/createuser', auth, accessControl, async (req, res) => {
             throw new Error('Validation Failed.');
         }
     } catch (ex) { return res.status(400).send(error.details[0].message) }
-
+    
     try {
         let user = await User.findOne({ email: req.body.email })
         if (user) {
             throw new Error('duplicate Error')
         }
-        user = new User(_.pick(req.body, ['firstname', 'lastname', 'email', 'password', 'preview', 'roles']))
+        user = new User(_.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'userAvatar', 'userRoles', 'orginizationRole']))
         await user.save();
-        return res.status(200).send(_.pick(user, ['_id', 'firstname', 'lastname', 'email', 'roles']))
-    } catch (ex) { return res.status(409).send({ error: 'کاربر از قبل تعریف شده است.' }) }
+        return res.status(200).send(_.pick(user, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole']))
+    } catch (ex) {     
+        console.log(ex)
+        return res.status(409).send({ error: 'کاربر از قبل تعریف شده است.' }) 
+    }
 });
 
 
@@ -31,7 +34,7 @@ router.get('/userfirstname', auth, accessControl, async (req, res) => {
     try {
         const finedUser = await User.findByToken(token)
         if (finedUser)
-            return res.status(200).send(_.pick(finedUser, ['firstname']))
+            return res.status(200).send(_.pick(finedUser, ['firstName']))
         return res.status(400).send('کاربری با این مشخصات وجود ندارد')
     } catch (e) {
         res.status(400).json({
@@ -45,7 +48,7 @@ router.get('/useravatar', auth, accessControl, async (req, res) => {
     try {
         const finedUser = await User.findByToken(token)
         if (finedUser)
-            return res.status(200).send(_.pick(finedUser, ['preview']))
+            return res.status(200).send(_.pick(finedUser, ['userAvatar']))
 
         return res.status(400).send('کاربری با این مشخصات وجود ندارد')
     } catch (e) {

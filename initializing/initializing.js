@@ -7,10 +7,13 @@ const { Ostans, Shahrestans, Bakhshs, Shahrs, Dehestans, Abadis } = require('../
 /////////////////////////////////////ایجاد یوزر اولیه در دیتابیس/////////////////////////////////////////////////////
 
 let testUser = new User({
-    fullname: 'mehdi parastar',
+
+    firstName: 'mehdi',
+    lastName: 'parastar',
     email: 'parastar.mehdi@gmail.com',
-    password: '123456',
-    roles: ['admin', 'post_pishkhan_user']
+    password: '12345678',
+    orginizationRole: 'director_general',
+    userRoles: ['Admin', 'PP_Admin']
 })
 Promise.all([
     testUser.save().then(() => console.log('user initialized')).catch(err => console.log('user exist'))

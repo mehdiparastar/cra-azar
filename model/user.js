@@ -10,21 +10,22 @@ const { mongoose } = require('../db/mongoose');
 const tokenOptions = { type: String, required: true };
 
 let UserSchema = new mongoose.Schema({
-    firstname: { type: String, required: true, minlength: 3, trim: true },
-    lastname: { type: String, required: true, minlength: 3, trim: true },
+    firstName: { type: String, required: true, minlength: 3, trim: true },
+    lastName: { type: String, required: true, minlength: 3, trim: true },
     email: { type: String, required: true, minlength: 6, unique: true, validate: { validator: validator.isEmail, message: `{value} is not valid email` } },
     password: { type: String, required: true, minlength: 6 },
     tokens: [{ _id: false, access: tokenOptions, token: tokenOptions }],
-    roles: [{ _id: false, type: String, required: true, minlength: 3 }],
-    preview: { type: String },
-    regDate:{type:Date, default:Date.now}
+    orginizationRole: { type: String, required: true, minlength: 3, trim: true },
+    userRoles: [{ _id: false, type: String, required: true, minlength: 3 }],
+    userAvatar: { type: String },
+    regDate: { type: Date, default: Date.now }
 });
 
 UserSchema.methods.toJSON = function () {
     let thisUser = this
     let userObject = thisUser.toObject()
 
-    return _.pick(userObject, ['_id', 'firstname', 'lastname', 'email', 'roles'])
+    return _.pick(userObject, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole'])
 }
 
 UserSchema.statics.findByCredentials = function (req) {
@@ -60,7 +61,7 @@ UserSchema.methods.generateAuthToken = function () {
 UserSchema.statics.findByToken = function (token) {
     let thisUser = this
     let decoded
-
+    
     try {
         decoded = jwt.verify(token, config.get('JWT_SECRET'))
     } catch (e) {
@@ -90,13 +91,15 @@ UserSchema.statics.validateLogin = function (req) {
 }
 
 UserSchema.statics.validateCreateUser = function (req) {
+    console.log(req.body)
     const joiSchema = {
-        firstname: Joi.string().min(3).max(255).required(),
-        lastname: Joi.string().min(3).max(255).required(),
+        firstName: Joi.string().min(3).max(255).required(),
+        lastName: Joi.string().min(3).max(255).required(),
         email: Joi.string().min(5).max(255).required().email(),
         password: Joi.string().min(6).max(12).required(),
-        roles: Joi.array().items(Joi.string()).min(1).required(),
-        preview: Joi.string().required()
+        orginizationRole: Joi.array().items(Joi.string()).min(1).required(),
+        userRoles: Joi.array().items(Joi.string()).min(1).required(),
+        userAvatar: Joi.string().required()
     };
     return Joi.validate(req.body, joiSchema);
 }

@@ -1,63 +1,117 @@
 const rolesPermissions = [
     {
-        role: 'admin',
+        role: 'Admin',
         permission: [
-            'admin',
-            'post_pishkhan',
-            'village_fix_wired',
-            'village_fix_wireless',
-            'village_mobile'
+            'Admin',
+            'PP_Admin',
+            'PP_User_L1',
+            'PP_User_L2',
+            'Vill_Admin',
+            'Vill_User_L1',
+            'Vill_User_L2'
         ]
     },
 
     {
-        role: 'post_pishkhan_user',
-        permission: ['post_pishkhan']
+        role: 'PP_Admin',
+        permission: ['PP_Admin', 'PP_User_L1', 'PP_User_L2']
     },
 
     {
-        role: 'village_fix_wired_user',
-        permission: ['village_fix_wired']
+        role: 'PP_User_L1',
+        permission: ['PP_User_L1']
     },
 
     {
-        role: 'village_fix_wireless_user',
-        permission: ['village_fix_wireless']
+        role: 'PP_User_L2',
+        permission: ['PP_User_L2']
     },
 
     {
-        role: 'village_mobile_user',
-        permission: ['village_mobile']
+        role: 'Vill_Admin',
+        permission: ['Vill_Admin', 'Vill_User_L1', 'Vill_User_L2']
+    },
+
+    {
+        role: 'Vill_User_L1',
+        permission: ['Vill_User_L1']
+    },
+
+    {
+        role: 'Vill_User_L2',
+        permission: ['Vill_User_L2']
     }
 ];
 
 const adminPermission = [{ '/api/users/createuser': 'POST' }]
 const commonPermission = [{ '/api/users/userfirstname': 'GET' }, { '/api/users/useravatar': 'GET' }]
-const post_pishkhanPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
-const village_fix_wiredPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
-const village_fix_wirelessPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
-const village_mobilePermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const ppAdminPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const ppUserL1Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const ppUserL2Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const villAdminPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const villUserL1Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
+const villUserL2Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
 
 const permissionAPIandMethod = [
     {
-        permission: 'admin',
-        whitelist: adminPermission.concat(commonPermission, post_pishkhanPermission, village_fix_wiredPermission, village_fix_wirelessPermission, village_mobilePermission)
+        permission: 'Admin',
+        whitelist: [
+            ...adminPermission,
+            ...commonPermission,
+            ...ppAdminPermission,
+            ...ppUserL1Permission,
+            ...ppUserL2Permission,
+            ...villAdminPermission,
+            ...villUserL1Permission,
+            ...villUserL2Permission,
+        ]
+        // adminPermission.concat(commonPermission, post_pishkhanPermission, village_fix_wiredPermission, village_fix_wirelessPermission, village_mobilePermission)
     },
     {
-        permission: 'post_pishkhan',
-        whitelist: commonPermission.concat(post_pishkhanPermission)
+        permission: 'PP_Admin',
+        whitelist: [
+            ...commonPermission,
+            ...ppAdminPermission,
+            ...ppUserL1Permission,
+            ...ppUserL2Permission,
+        ]
     },
     {
-        permission: 'village_fix_wired',
-        whitelist: commonPermission.concat(village_fix_wiredPermission)
+        permission: 'PP_User_L1',
+        whitelist: [
+            ...commonPermission,
+            ...ppUserL1Permission,
+        ]
     },
     {
-        permission: 'village_fix_wireless',
-        whitelist: commonPermission.concat(village_fix_wirelessPermission)
+        permission: 'PP_User_L2',
+        whitelist: [
+            ...commonPermission,
+            ...ppUserL2Permission,
+        ]
     },
     {
-        permission: 'village_mobile',
-        whitelist: commonPermission.concat(village_mobilePermission)
+        permission: 'Vill_Admin',
+        whitelist: [
+            ...commonPermission,
+            ...villAdminPermission,
+            ...villUserL1Permission,
+            ...villUserL2Permission,
+        ]
+    },
+    {
+        permission: 'Vill_User_L1',
+        whitelist: [
+            ...commonPermission,
+            ...villUserL1Permission,
+        ]
+    },
+    {
+        permission: 'Vill_User_L2',
+        whitelist: [
+            ...commonPermission,
+            ...villUserL2Permission,
+        ]
     }
 ];
 
