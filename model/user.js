@@ -91,7 +91,6 @@ UserSchema.statics.validateLogin = function (req) {
 }
 
 UserSchema.statics.validateCreateUser = function (req) {
-    console.log(req.body)
     const joiSchema = {
         firstName: Joi.string().min(3).max(255).required(),
         lastName: Joi.string().min(3).max(255).required(),
