@@ -13,7 +13,7 @@ router.post('/createuser', auth, accessControl, async (req, res) => {
             throw new Error('Validation Failed.');
         }
     } catch (ex) { return res.status(400).send(error.details[0].message) }
-    
+
     try {
         let user = await User.findOne({ email: req.body.email })
         if (user) {
@@ -22,11 +22,25 @@ router.post('/createuser', auth, accessControl, async (req, res) => {
         user = new User(_.pick(req.body, ['firstName', 'lastName', 'email', 'password', 'userAvatar', 'userRoles', 'orginizationRole']))
         await user.save();
         return res.status(200).send(_.pick(user, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole']))
-    } catch (ex) {     
+    } catch (ex) {
         console.log(ex)
-        return res.status(409).send({ error: 'کاربر از قبل تعریف شده است.' }) 
+        return res.status(409).send({ error: 'کاربر از قبل تعریف شده است.' })
     }
 });
+
+router.get('/userslist', auth, accessControl, async (req, res) => {
+    try {
+        const users = await User.find();
+        if (!users)
+            return res.status(400).send('هیچ کاربری تعریف نشده است.')
+
+        res.status(200).send(users);
+    } catch (e) {
+        res.status(400).json({
+            Error: `Somethings went wrong. ${e}`
+        });
+    }
+})
 
 
 router.get('/userfirstname', auth, accessControl, async (req, res) => {

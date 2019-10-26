@@ -43,7 +43,7 @@ const rolesPermissions = [
     }
 ];
 
-const adminPermission = [{ '/api/users/createuser': 'POST' }]
+const adminPermission = [{ '/api/users/createuser': 'POST' }, { '/api/users/userslist': 'GET' }]
 const commonPermission = [{ '/api/users/userfirstname': 'GET' }, { '/api/users/useravatar': 'GET' }]
 const ppAdminPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
 const ppUserL1Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]

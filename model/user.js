@@ -25,7 +25,7 @@ UserSchema.methods.toJSON = function () {
     let thisUser = this
     let userObject = thisUser.toObject()
 
-    return _.pick(userObject, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole'])
+    return _.pick(userObject, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole', 'userAvatar'])
 }
 
 UserSchema.statics.findByCredentials = function (req) {
