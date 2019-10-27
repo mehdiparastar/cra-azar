@@ -25,7 +25,7 @@ UserSchema.methods.toJSON = function () {
     let thisUser = this
     let userObject = thisUser.toObject()
 
-    return _.pick(userObject, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole', 'userAvatar'])
+    return _.pick(userObject, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole', 'userAvatar', 'regDate'])
 }
 
 UserSchema.statics.findByCredentials = function (req) {
@@ -61,7 +61,7 @@ UserSchema.methods.generateAuthToken = function () {
 UserSchema.statics.findByToken = function (token) {
     let thisUser = this
     let decoded
-    
+
     try {
         decoded = jwt.verify(token, config.get('JWT_SECRET'))
     } catch (e) {

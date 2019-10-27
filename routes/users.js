@@ -28,7 +28,7 @@ router.post('/createuser', auth, accessControl, async (req, res) => {
     }
 });
 
-router.get('/userslist', auth, accessControl, async (req, res) => {
+router.get('/allusers', auth, accessControl, async (req, res) => {
     try {
         const users = await User.find();
         if (!users)
