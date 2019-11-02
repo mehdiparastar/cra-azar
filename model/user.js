@@ -5,9 +5,10 @@ const _ = require('lodash');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const { mongoose } = require('../db/mongoose');
-
-
+const { orginizationRoleMapper, userRolesMapper } = require('../utils/dropDownMapper')
 const tokenOptions = { type: String, required: true };
+const moment = require('moment-jalaali')
+
 
 let UserSchema = new mongoose.Schema({
     firstName: { type: String, required: true, minlength: 3, trim: true },
@@ -17,14 +18,16 @@ let UserSchema = new mongoose.Schema({
     tokens: [{ _id: false, access: tokenOptions, token: tokenOptions }],
     orginizationRole: { type: String, required: true, minlength: 3, trim: true },
     userRoles: [{ _id: false, type: String, required: true, minlength: 3 }],
-    userAvatar: { type: String },
-    regDate: { type: Date, default: Date.now }
+    userAvatar: { type: String },    
+    regDate: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') }
 });
 
 UserSchema.methods.toJSON = function () {
     let thisUser = this
     let userObject = thisUser.toObject()
 
+    userObject.userRoles = userRolesMapper(userObject.userRoles).join(' - ')
+    userObject.orginizationRole = orginizationRoleMapper(userObject.orginizationRole);
     return _.pick(userObject, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole', 'userAvatar', 'regDate'])
 }
 
