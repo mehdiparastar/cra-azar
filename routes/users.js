@@ -72,4 +72,14 @@ router.get('/useravatar', auth, accessControl, async (req, res) => {
     }
 })
 
+router.get('/:id', auth, accessControl, async (req, res) => {
+
+    const user = await User.findById(req.params.id);
+
+    if (!user)
+        return res.status(404).send('There is no user for the given id.');
+
+    res.status(200).send(user);
+});
+
 module.exports = router;
