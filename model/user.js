@@ -26,8 +26,8 @@ UserSchema.methods.toJSON = function () {
     let thisUser = this
     let userObject = thisUser.toObject()
 
-    userObject.userRoles = userRolesMapper(userObject.userRoles).join(' - ')
-    userObject.orginizationRole = orginizationRoleMapper(userObject.orginizationRole);
+    // userObject.userRoles = userRolesMapper(userObject.userRoles).join(' - ')
+    // userObject.orginizationRole = orginizationRoleMapper(userObject.orginizationRole);
     return _.pick(userObject, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole', 'userAvatar', 'regDate'])
 }
 
