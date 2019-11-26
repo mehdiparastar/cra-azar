@@ -90,6 +90,7 @@ router.put('/:id', auth, accessControl, async (req, res) => {
         }
     } catch (ex) { return res.status(400).send(error.details[0].message) }
 
+    // const user = await User.findOne({ email: req.body.email })
     const course = await User.findByIdAndUpdate(
         req.params.id,
         {

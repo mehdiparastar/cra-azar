@@ -6,6 +6,7 @@ mongoose.connection
     .once('open', () => console.log(' --***-- connecting to db is successful! --***-- '))
     .on('error', (error) => console.warn('Warning', error))
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 
 if (config.get('Level') === 'test') {
     beforeEach((done) => {

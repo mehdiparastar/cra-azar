@@ -132,6 +132,21 @@ UserSchema.pre('save', function (next) {
     }
 });
 
+UserSchema.pre('findOneAndUpdate', function (next) {
+    let thisUser = this;
+    console.log(thisUser)
+    // if (thisUser.isModified('password')) {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(thisUser._update.password, salt, (err, hash) => {
+                thisUser._update.password = hash;
+                next();
+            });
+        });
+    // } else {
+    //     next();
+    // }
+});
+
 let User = mongoose.model('User', UserSchema);
 
 
