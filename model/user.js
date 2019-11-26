@@ -106,6 +106,18 @@ UserSchema.statics.validateCreateUser = function (req) {
     return Joi.validate(req.body, joiSchema);
 }
 
+UserSchema.statics.validateUpdateUserInfo = function (req) {
+    const joiSchema = {
+        firstName: Joi.string().min(3).max(255).required(),
+        lastName: Joi.string().min(3).max(255).required(),
+        email: Joi.string().min(5).max(255).required().email(),
+        password: Joi.string().min(6).max(12).required(),
+        orginizationRole: Joi.array().items(Joi.string()).min(1).required(),
+        userRoles: Joi.array().items(Joi.string()).min(1).required(),
+    };
+    return Joi.validate(req.body, joiSchema);
+}
+
 UserSchema.pre('save', function (next) {
     let thisUser = this;
     if (thisUser.isModified('password')) {

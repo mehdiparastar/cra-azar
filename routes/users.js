@@ -82,4 +82,31 @@ router.get('/:id', auth, accessControl, async (req, res) => {
     res.status(200).send(user);
 });
 
+router.put('/:id', auth, accessControl, async (req, res) => {
+    try {
+        const { error } = User.validateUpdateUserInfo(req.body);
+        if (error) {
+            throw new Error('Validation Failed.');
+        }
+    } catch (ex) { return res.status(400).send(error.details[0].message) }
+
+    const course = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: req.body.password,
+            orginizationRole: req.body.orginizationRole,
+            userRoles: req.body.userRoles,
+        },
+        { new: true }
+    );
+
+    if (!course)
+        return res.status(404).send('There is no course for the given id.');
+
+    res.status(200).send(course);
+});
+
 module.exports = router;
