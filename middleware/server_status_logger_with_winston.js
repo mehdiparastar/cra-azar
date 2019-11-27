@@ -7,6 +7,7 @@ serverStatusLogger = winston.createLogger({
         new winston.transports.File({
             filename: path.join(__dirname, '../log/server_status.log')
         })
+        
     ]
 });
 

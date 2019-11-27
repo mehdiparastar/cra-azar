@@ -18,7 +18,7 @@ let UserSchema = new mongoose.Schema({
     tokens: [{ _id: false, access: tokenOptions, token: tokenOptions }],
     orginizationRole: { type: String, required: true, minlength: 3, trim: true },
     userRoles: [{ _id: false, type: String, required: true, minlength: 3 }],
-    userAvatar: { type: String },    
+    userAvatar: { type: String },
     regDate: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') }
 });
 
@@ -132,18 +132,20 @@ UserSchema.pre('save', function (next) {
     }
 });
 
-UserSchema.pre('findOneAndUpdate', function (next) {
+UserSchema.pre('findOneAndUpdate', async function (next) {
     let thisUser = this;
-    // if (thisUser.isModified('password')) {
+    if (thisUser._update.password && thisUser._update.password !== "") {
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(thisUser._update.password, salt, (err, hash) => {
                 thisUser._update.password = hash;
                 next();
             });
         });
-    // } else {
-    //     next();
-    // }
+    } else {
+        delete thisUser._update.password
+        next();
+    }
+
 });
 
 let User = mongoose.model('User', UserSchema);

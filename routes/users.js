@@ -91,7 +91,7 @@ router.put('/:id', auth, accessControl, async (req, res) => {
     } catch (ex) { return res.status(400).send(error.details[0].message) }
 
     // const user = await User.findOne({ email: req.body.email })
-    const course = await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
         req.params.id,
         {
             firstName: req.body.firstName,
@@ -104,10 +104,25 @@ router.put('/:id', auth, accessControl, async (req, res) => {
         { new: true }
     );
 
-    if (!course)
+    if (!user)
         return res.status(404).send('There is no course for the given id.');
 
-    res.status(200).send(course);
+    res.status(200).send(user);
+});
+
+router.put('/tokens/:id', auth, accessControl, async (req, res) => {
+    const user = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+            tokens: [],
+        },
+        { new: true }
+    );
+
+    if (!user)
+        return res.status(404).send('There is no course for the given id.');
+
+    res.status(200).send(user);
 });
 
 module.exports = router;
