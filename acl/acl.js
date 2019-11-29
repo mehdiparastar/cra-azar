@@ -1,45 +1,45 @@
 const rolesPermissions = [
     {
-        role: 'Admin',
+        role: 'مدیر سیستم',
         permission: [
-            'Admin',
-            'PP_Admin',
-            'PP_User_L1',
-            'PP_User_L2',
-            'Vill_Admin',
-            'Vill_User_L1',
-            'Vill_User_L2'
+            'مدیر سیستم',
+            'مدیر پست و پیشخوان',
+            'کاربر پست و پیشخوان سطح 1',
+            'کاربر پست و پیشخوان سطح 2',
+            'مدیر روستایی',
+            'کاربر روستایی سطح 1',
+            'کاربر روستایی سطح 2'
         ]
     },
 
     {
-        role: 'PP_Admin',
-        permission: ['PP_Admin', 'PP_User_L1', 'PP_User_L2']
+        role: 'مدیر پست و پیشخوان',
+        permission: ['مدیر پست و پیشخوان', 'کاربر پست و پیشخوان سطح 1', 'کاربر پست و پیشخوان سطح 2']
     },
 
     {
-        role: 'PP_User_L1',
-        permission: ['PP_User_L1']
+        role: 'کاربر پست و پیشخوان سطح 1',
+        permission: ['کاربر پست و پیشخوان سطح 1']
     },
 
     {
-        role: 'PP_User_L2',
-        permission: ['PP_User_L2']
+        role: 'کاربر پست و پیشخوان سطح 2',
+        permission: ['کاربر پست و پیشخوان سطح 2']
     },
 
     {
-        role: 'Vill_Admin',
-        permission: ['Vill_Admin', 'Vill_User_L1', 'Vill_User_L2']
+        role: 'مدیر روستایی',
+        permission: ['مدیر روستایی', 'کاربر روستایی سطح 1', 'کاربر روستایی سطح 2']
     },
 
     {
-        role: 'Vill_User_L1',
-        permission: ['Vill_User_L1']
+        role: 'کاربر روستایی سطح 1',
+        permission: ['کاربر روستایی سطح 1']
     },
 
     {
-        role: 'Vill_User_L2',
-        permission: ['Vill_User_L2']
+        role: 'کاربر روستایی سطح 2',
+        permission: ['کاربر روستایی سطح 2']
     }
 ];
 
@@ -60,7 +60,7 @@ const villUserL2Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
 
 const permissionAPIandMethod = [
     {
-        permission: 'Admin',
+        permission: 'مدیر سیستم',
         whitelist: [
             ...adminPermission,
             ...commonPermission,
@@ -74,7 +74,7 @@ const permissionAPIandMethod = [
         // adminPermission.concat(commonPermission, post_pishkhanPermission, village_fix_wiredPermission, village_fix_wirelessPermission, village_mobilePermission)
     },
     {
-        permission: 'PP_Admin',
+        permission: 'مدیر پست و پیشخوان',
         whitelist: [
             ...commonPermission,
             ...ppAdminPermission,
@@ -83,21 +83,21 @@ const permissionAPIandMethod = [
         ]
     },
     {
-        permission: 'PP_User_L1',
+        permission: 'کاربر پست و پیشخوان سطح 1',
         whitelist: [
             ...commonPermission,
             ...ppUserL1Permission,
         ]
     },
     {
-        permission: 'PP_User_L2',
+        permission: 'کاربر پست و پیشخوان سطح 2',
         whitelist: [
             ...commonPermission,
             ...ppUserL2Permission,
         ]
     },
     {
-        permission: 'Vill_Admin',
+        permission: 'مدیر روستایی',
         whitelist: [
             ...commonPermission,
             ...villAdminPermission,
@@ -106,14 +106,14 @@ const permissionAPIandMethod = [
         ]
     },
     {
-        permission: 'Vill_User_L1',
+        permission: 'کاربر روستایی سطح 1',
         whitelist: [
             ...commonPermission,
             ...villUserL1Permission,
         ]
     },
     {
-        permission: 'Vill_User_L2',
+        permission: 'کاربر روستایی سطح 2',
         whitelist: [
             ...commonPermission,
             ...villUserL2Permission,

@@ -88,26 +88,23 @@ router.put('/:id', auth, accessControl, async (req, res) => {
         if (error) {
             throw new Error('Validation Failed.');
         }
-    } catch (ex) { return res.status(400).send(error.details[0].message) }
+    } catch (ex) { return res.status(400).send(error.details[0].message) }    
 
-    // const user = await User.findOne({ email: req.body.email })
-    const user = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: req.body.password,
-            orginizationRole: req.body.orginizationRole,
-            userRoles: req.body.userRoles,
-        },
-        { new: true }
-    );
-
-    if (!user)
-        return res.status(404).send('There is no course for the given id.');
-
-    res.status(200).send(user);
+    try {
+        let user = await User.findById(req.params.id)
+        user.firstName = req.body.firstName;
+        user.lastName = req.body.lastName;
+        user.email = req.body.email;
+        if (req.body.password && req.body.password != "") user.password = req.body.password;
+        user.userRoles = req.body.userRoles;
+        user.orginizationRole = req.body.orginizationRole;
+        
+        await user.save();
+        return res.status(200).send(_.pick(user, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole']))
+    } catch (ex) {
+        console.log(ex)
+        return res.status(422).send({ error: 'مشکل اعتبار سنجی!' })
+    }
 });
 
 router.put('/tokens/:id', auth, accessControl, async (req, res) => {

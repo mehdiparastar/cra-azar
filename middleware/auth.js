@@ -1,7 +1,8 @@
 const { User } = require('../model/user')
 
 const auth = async (req, res, next) => {
-    const token = await req.header('x-auth-token')
+    const token = req.header('x-auth-token')
+
     User.findByToken(token).then((user) => {
         if (!user) {
             return promise.reject()

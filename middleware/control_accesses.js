@@ -1,12 +1,16 @@
 const { rolesPermissions, permissionAPIandMethod } = require('../acl/acl');
 const _ = require('lodash');
 require('../utils/utils');
+const { User } = require('../model/user')
 
-let accessControl = (req, res, next) => {
+
+let accessControl = async (req, res, next) => {
 
     try {
-        const user = req.user;
-        // const user_token = req.token;
+
+        const user = await User.findByToken(req.header('x-auth-token'))
+        console.log(user.userRoles);
+
         let permissions = [];
         user.userRoles.forEach(element => {
             permissions = [..._.filter(rolesPermissions, { role: element })[0].permission, ...permissions]
