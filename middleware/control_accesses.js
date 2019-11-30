@@ -9,7 +9,6 @@ let accessControl = async (req, res, next) => {
     try {
 
         const user = await User.findByToken(req.header('x-auth-token'))
-        console.log(user.userRoles);
 
         let permissions = [];
         user.userRoles.forEach(element => {
