@@ -19,16 +19,16 @@ app.use(helmet());
 app.use(morgan('combined', { stream: requestLogger_with_morgan }));
 app.use(morgan('tiny'));
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     const token = req.header('x-auth-token');
     const method = req.method;
-    const url = req.originalUrl
-    console.log(req.header('client-ip'));
-    
+    const api = req.originalUrl
+    const clientIp = await req.header('client-ip');
+
     res.on('finish', () => {
         const statusCode = res.statusCode;
         if (statusCode)
-            User.saveReqLog(token, method, url, statusCode)
+            User.saveReqLog(token, method, api, clientIp, statusCode)
     })
     next();
 })
