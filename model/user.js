@@ -7,6 +7,9 @@ const jwt = require('jsonwebtoken');
 const { mongoose } = require('../db/mongoose');
 const { orginizationRoleMapper, userRolesMapper } = require('../utils/dropDownMapper')
 const tokenOptions = { type: String, required: true };
+const methodOptions = { type: String, required: false };
+const apiOptions = { type: String, required: false };
+const resCodeOptions = { type: String, required: false };
 const moment = require('moment-jalaali')
 
 
@@ -19,7 +22,8 @@ let UserSchema = new mongoose.Schema({
     orginizationRole: { type: String, required: true, minlength: 3, trim: true },
     userRoles: [{ _id: false, type: String, required: true, minlength: 3 }],
     userAvatar: { type: String },
-    regDate: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') }
+    regDate: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') },
+    userReqLogs: [{ _id: false, method: methodOptions, api: apiOptions, resCode: resCodeOptions, time: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') } }]
 });
 
 UserSchema.methods.toJSON = function () {
@@ -68,14 +72,35 @@ UserSchema.statics.findByToken = function (token) {
     try {
         decoded = jwt.verify(token, config.get('JWT_SECRET'))
     } catch (e) {
-        return Promise.reject()
+        return Promise.reject(e)
     }
     return thisUser.findOne({
         _id: decoded._id,
         'tokens.token': token,
         'tokens.access': decoded.access
     })
+}
 
+UserSchema.statics.saveReqLog = function (token, method, api, resCode) {
+    let thisUser = this
+    let decoded
+
+    try {
+        decoded = jwt.decode(token, config.get('JWT_SECRET'))
+    } catch (e) {
+        return Promise.reject(e)
+    }
+    if (decoded)
+        thisUser.findOne({
+            _id: decoded._id,
+            'tokens.token': token,
+            'tokens.access': decoded.access
+        })
+            .then((user) => {
+                user.userReqLogs.push({ method, api, resCode })
+                user.save()
+            })
+            .catch((ex) => console.log(ex))
 }
 
 UserSchema.statics.validateLogin = function (req) {

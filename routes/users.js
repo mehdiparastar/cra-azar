@@ -42,7 +42,6 @@ router.get('/allusers', auth, accessControl, async (req, res) => {
     }
 })
 
-
 router.get('/userfirstname', auth, accessControl, async (req, res) => {
     const token = req.header('x-auth-token');
     try {
@@ -88,7 +87,7 @@ router.put('/:id', auth, accessControl, async (req, res) => {
         if (error) {
             throw new Error('Validation Failed.');
         }
-    } catch (ex) { return res.status(400).send(error.details[0].message) }    
+    } catch (ex) { return res.status(400).send(error.details[0].message) }
 
     try {
         let user = await User.findById(req.params.id)
@@ -98,7 +97,7 @@ router.put('/:id', auth, accessControl, async (req, res) => {
         if (req.body.password && req.body.password != "") user.password = req.body.password;
         user.userRoles = req.body.userRoles;
         user.orginizationRole = req.body.orginizationRole;
-        
+
         await user.save();
         return res.status(200).send(_.pick(user, ['_id', 'firstName', 'lastName', 'email', 'userRoles', 'orginizationRole']))
     } catch (ex) {
@@ -120,6 +119,26 @@ router.put('/tokens/:id', auth, accessControl, async (req, res) => {
         return res.status(404).send('There is no course for the given id.');
 
     res.status(200).send(user);
+});
+
+router.get('/userReqLogs/:id', auth, accessControl, (req, res) => {
+
+    // const user = await User.findById(req.params.id);
+
+    // if (!user) {
+    //     console.log(user.userReqLogs);
+    //     return res.status(404).send('There is no user for the given id.');
+    // }
+
+    // res.status(200).send(user.userReqLogs);
+
+    User.findById(req.params.id)
+        .then((user) => {
+            res.status(200).send(user.userReqLogs);
+        })
+        .catch((ex) => {
+            res.status(404).send(ex);
+        })
 });
 
 module.exports = router;

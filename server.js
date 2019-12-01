@@ -11,6 +11,7 @@ const app = express();
 const login = require('./routes/login');
 const users = require('./routes/users');
 const { setHeaders } = require('./middleware/headers');
+const { User } = require('./model/user');
 
 app.use(express.json());
 app.use(setHeaders);
@@ -18,12 +19,30 @@ app.use(helmet());
 app.use(morgan('combined', { stream: requestLogger_with_morgan }));
 app.use(morgan('tiny'));
 
+app.use((req, res, next) => {
+    const token = req.header('x-auth-token');
+    const method = req.method;
+    const url = req.originalUrl
+    console.log(req.header('client-ip'));
+    
+    res.on('finish', () => {
+        const statusCode = res.statusCode;
+        if (statusCode)
+            User.saveReqLog(token, method, url, statusCode)
+    })
+    next();
+})
+
+
+
 // require('./initializing/initializing')
 
 app.use('/api/login', login);
 app.use('/api/users', users);
 // app.use('/api/common', commons)
 // app.use('/api/pishkhan', pishkhans)
+
+
 
 app.listen(config.get('PORT'), () => { serverStatusLogger.info(`Server running on port ${config.get('PORT')}`); });
 
