@@ -20,6 +20,7 @@ app.use(morgan('combined', { stream: requestLogger_with_morgan }));
 app.use(morgan('tiny'));
 
 app.use(async (req, res, next) => {
+
     const token = req.header('x-auth-token');
     const method = req.method;
     const api = req.originalUrl
@@ -32,7 +33,6 @@ app.use(async (req, res, next) => {
     })
     next();
 })
-
 
 
 // require('./initializing/initializing')
