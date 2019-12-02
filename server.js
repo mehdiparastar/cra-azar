@@ -48,10 +48,6 @@ app.listen(config.get('PORT'), () => { serverStatusLogger.info(`Server running o
 
 
 
-
-
-
-
 // const { Ostans, Shahrestans, Bakhshs, Shahrs, Dehestans, Abadis } = require('./model/CountryDivisions');
 
 // app.post('/api/test1', authenticate, accessControl, async (req, res) => {
