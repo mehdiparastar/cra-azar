@@ -116,7 +116,7 @@ router.put('/tokens/:id', auth, accessControl, async (req, res) => {
     );
 
     if (!user)
-        return res.status(404).send('There is no course for the given id.');
+        return res.status(404).send('There is no user for the given id.');
 
     res.status(200).send(user);
 });
@@ -140,5 +140,17 @@ router.get('/userReqLogs/:id', auth, accessControl, (req, res) => {
             res.status(404).send(ex);
         })
 });
+
+router.delete('/account/:id', auth, accessControl, async (req, res) => {
+    const user = await User.findByIdAndRemove(req.params.id);
+
+    if (!user)
+        return res.status(404).send('There is no user for the given id.');
+
+    res.status(200).send(user);
+
+});
+
+
 
 module.exports = router;

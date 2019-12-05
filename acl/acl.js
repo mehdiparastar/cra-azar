@@ -49,7 +49,8 @@ const adminPermission = [
     { '/api/users/:id': 'GET' },
     { '/api/users/:id': 'PUT' },
     { '/api/users/tokens/:id': 'PUT' },
-    { '/api/users/userReqLogs/:id': 'GET' }
+    { '/api/users/userReqLogs/:id': 'GET' },
+    { '/api/users/account/:id': 'DELETE' }
 ]
 const commonPermission = [{ '/api/users/userfirstname': 'GET' }, { '/api/users/useravatar': 'GET' }]
 const ppAdminPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
