@@ -6,7 +6,7 @@ const { accessControl } = require('../middleware/control_accesses')
 const { User } = require('../model/user');
 
 
-router.post('/createuser', auth, accessControl, async (req, res) => {
+router.post('/management/createuser', auth, accessControl, async (req, res) => {
     try {
         const { error } = User.validateCreateUser(req.body);
         if (error) {
@@ -28,7 +28,7 @@ router.post('/createuser', auth, accessControl, async (req, res) => {
     }
 });
 
-router.get('/allusers', auth, accessControl, async (req, res) => {
+router.get('/management/allusers', auth, accessControl, async (req, res) => {
     try {
         const users = await User.find();
         if (!users)
@@ -38,6 +38,58 @@ router.get('/allusers', auth, accessControl, async (req, res) => {
     } catch (e) {
         res.status(400).json({
             Error: `Somethings went wrong. ${e}`
+        });
+    }
+})
+
+router.get('/user', auth, accessControl, async (req, res) => {
+    const token = req.header('x-auth-token');
+    try {
+        const finedUser = await User.findByToken(token)
+        if (finedUser)
+            return res.status(200).send(finedUser)
+        return res.status(400).send('کاربری با این مشخصات وجود ندارد')
+    } catch (e) {
+        res.status(400).json({
+            Error: `Somethings went wrong. ${e}`
+        });
+    }
+})
+
+router.put('/user-update', auth, accessControl, async (req, res) => {
+    const token = req.header('x-auth-token');
+    try {
+        const finedUser = await User.findByToken(token)
+
+        if (finedUser) {
+            finedUser.firstName = req.body.firstName;
+            finedUser.lastName = req.body.lastName;
+            finedUser.email = req.body.email;
+            await finedUser.save();
+            return res.status(200).send()
+        }
+        return res.status(400).send('کاربری با این مشخصات وجود ندارد')
+    } catch (e) {
+        res.status(470).json({
+            Error: `update failed. ${e}`
+        });
+    }
+})
+
+router.put('/user-update-avatar', auth, accessControl, async (req, res) => {
+    const token = req.header('x-auth-token');
+    try {
+        const finedUser = await User.findByToken(token)
+
+        if (finedUser) {
+            finedUser.userAvatar = req.body.userAvatar;
+            await finedUser.save();
+            return res.status(200).send()
+        }
+        return res.status(400).send('کاربری با این مشخصات وجود ندارد')
+    } catch (e) {
+        res.status(470).json({
+            Error: `update failed. ${e}`
         });
     }
 })
@@ -71,7 +123,7 @@ router.get('/useravatar', auth, accessControl, async (req, res) => {
     }
 })
 
-router.get('/:id', auth, accessControl, async (req, res) => {
+router.get('/management/:id', auth, accessControl, async (req, res) => {
 
     const user = await User.findById(req.params.id);
 
@@ -81,7 +133,7 @@ router.get('/:id', auth, accessControl, async (req, res) => {
     res.status(200).send(user);
 });
 
-router.put('/:id', auth, accessControl, async (req, res) => {
+router.put('/management/:id', auth, accessControl, async (req, res) => {
     try {
         const { error } = User.validateUpdateUserInfo(req.body);
         if (error) {
@@ -106,7 +158,7 @@ router.put('/:id', auth, accessControl, async (req, res) => {
     }
 });
 
-router.put('/tokens/:id', auth, accessControl, async (req, res) => {
+router.put('/management/tokens/:id', auth, accessControl, async (req, res) => {
     const user = await User.findByIdAndUpdate(
         req.params.id,
         {
@@ -121,7 +173,7 @@ router.put('/tokens/:id', auth, accessControl, async (req, res) => {
     res.status(200).send(user);
 });
 
-router.get('/userReqLogs/:id', auth, accessControl, (req, res) => {
+router.get('/management/userReqLogs/:id', auth, accessControl, (req, res) => {
 
     // const user = await User.findById(req.params.id);
 
@@ -141,7 +193,7 @@ router.get('/userReqLogs/:id', auth, accessControl, (req, res) => {
         })
 });
 
-router.delete('/account/:id', auth, accessControl, async (req, res) => {
+router.delete('/management/account/:id', auth, accessControl, async (req, res) => {
     const user = await User.findByIdAndRemove(req.params.id);
 
     if (!user)

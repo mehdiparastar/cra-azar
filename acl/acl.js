@@ -44,15 +44,22 @@ const rolesPermissions = [
 ];
 
 const adminPermission = [
-    { '/api/users/createuser': 'POST' },
-    { '/api/users/allusers': 'GET' },
-    { '/api/users/:id': 'GET' },
-    { '/api/users/:id': 'PUT' },
-    { '/api/users/tokens/:id': 'PUT' },
-    { '/api/users/userReqLogs/:id': 'GET' },
-    { '/api/users/account/:id': 'DELETE' }
+    { '/api/users/management/createuser': 'POST' },
+    { '/api/users/management/allusers': 'GET' },
+    { '/api/users/management/:id': 'GET' },
+    { '/api/users/management/:id': 'PUT' },
+    { '/api/users/management/tokens/:id': 'PUT' },
+    { '/api/users/management/userReqLogs/:id': 'GET' },
+    { '/api/users/management/account/:id': 'DELETE' },
+    { '/api/users/user': 'GET' },
+    // { '/api/users/user-update': 'PUT' },
 ]
-const commonPermission = [{ '/api/users/userfirstname': 'GET' }, { '/api/users/useravatar': 'GET' }]
+const commonPermission = [
+    { '/api/users/userfirstname': 'GET' },
+    { '/api/users/useravatar': 'GET' },
+    { '/api/users/user-update': 'PUT' },
+    { '/api/users/user-update-avatar': 'PUT' },
+]
 const ppAdminPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
 const ppUserL1Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
 const ppUserL2Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
