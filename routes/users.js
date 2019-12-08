@@ -76,6 +76,24 @@ router.put('/user-update', auth, accessControl, async (req, res) => {
     }
 })
 
+router.put('/user-change-password', auth, accessControl, async (req, res) => {
+    const token = req.header('x-auth-token');
+    try {
+        const finedUser = await User.findByToken(token)
+
+        if (finedUser) {
+            finedUser.password = req.body.password;
+            await finedUser.save();
+            return res.status(200).send()
+        }
+        return res.status(400).send('کاربری با این مشخصات وجود ندارد')
+    } catch (e) {
+        res.status(470).json({
+            Error: `update failed. ${e}`
+        });
+    }
+})
+
 router.put('/user-update-avatar', auth, accessControl, async (req, res) => {
     const token = req.header('x-auth-token');
     try {
