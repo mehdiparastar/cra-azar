@@ -164,7 +164,8 @@ router.put('/management/:id', auth, accessControl, async (req, res) => {
         user.firstName = req.body.firstName;
         user.lastName = req.body.lastName;
         user.email = req.body.email;
-        if (req.body.password && req.body.password != "") user.password = req.body.password;
+        if (req.body.password && req.body.password != "")
+            user.password = req.body.password;
         user.userRoles = req.body.userRoles;
         user.orginizationRole = req.body.orginizationRole;
 
