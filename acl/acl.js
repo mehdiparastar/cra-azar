@@ -52,11 +52,13 @@ const adminPermission = [
     { '/api/users/management/userReqLogs/:id': 'GET' },
     { '/api/users/management/account/:id': 'DELETE' },
     { '/api/users/user': 'GET' },
-    // { '/api/users/user-update': 'PUT' },
+    { '/api/users/management/users-accounts/:idlist': 'DELETE' },
+    { '/api/users/management/users-tokens/:idlist': 'DELETE' },
 ]
 const commonPermission = [
     { '/api/users/userfirstname': 'GET' },
     { '/api/users/useravatar': 'GET' },
+    { '/api/users/user': 'GET' },
     { '/api/users/user-update': 'PUT' },
     { '/api/users/user-update-avatar': 'PUT' },
     { '/api/users/user-change-password': 'PUT' }

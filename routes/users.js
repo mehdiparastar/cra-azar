@@ -222,6 +222,47 @@ router.delete('/management/account/:id', auth, accessControl, async (req, res) =
 
 });
 
+router.delete('/management/users-accounts/:idlist', auth, accessControl, async (req, res) => {
+
+    let cantDeleteUsersList = []
+    req.params.idlist.split(',').map(async userId => {
+        try {
+            let deletedUser = await User.findByIdAndRemove(userId);
+        } catch{
+            cantDeleteUsersList = [...cantDeleteUsersList, userId]
+        }
+    })
+
+    if (cantDeleteUsersList.length !== 0)
+        return res.status(404).send(cantDeleteUsersList);
+
+    res.status(200).send();
+
+});
+
+router.delete('/management/users-tokens/:idlist', auth, accessControl, async (req, res) => {
+
+    let cantDeleteUsersTokensList = []
+    req.params.idlist.split(',').map(async userId => {
+        try {
+            let deletedUserTokens = await User.findByIdAndUpdate(
+                userId,
+                {
+                    tokens: [],
+                },
+                { new: true }
+            );
+        } catch{
+            cantDeleteUsersTokensList = [...cantDeleteUsersTokensList, userId]
+        }
+    })
+
+    if (cantDeleteUsersTokensList.length !== 0)
+        return res.status(404).send(cantDeleteUsersTokensList);
+
+    res.status(200).send();
+
+});
 
 
 module.exports = router;
