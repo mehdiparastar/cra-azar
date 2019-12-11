@@ -54,7 +54,10 @@ const adminPermission = [
     { '/api/users/user': 'GET' },
     { '/api/users/management/users-accounts/:idlist': 'DELETE' },
     { '/api/users/management/users-tokens/:idlist': 'DELETE' },
+    { '/api/users/management/user-feed/:id': 'POST' },
+    { '/api/users/management/user-feed/:id': 'GET' },
 ]
+
 const commonPermission = [
     { '/api/users/userfirstname': 'GET' },
     { '/api/users/useravatar': 'GET' },

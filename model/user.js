@@ -8,6 +8,7 @@ const { mongoose } = require('../db/mongoose');
 const { orginizationRoleMapper, userRolesMapper } = require('../utils/dropDownMapper')
 const tokenOptions = { type: String, required: true };
 const methodOptions = { type: String, required: false };
+const seenOptions = { type: Boolean, required: true };
 const apiOptions = { type: String, required: false };
 const resCodeOptions = { type: String, required: false };
 const clientIpOptions = { type: String, required: false };
@@ -24,7 +25,9 @@ let UserSchema = new mongoose.Schema({
     userRoles: [{ _id: false, type: String, required: true, minlength: 3 }],
     userAvatar: { type: String },
     regDate: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') },
-    userReqLogs: [{ _id: false, method: methodOptions, api: apiOptions, clientIp: clientIpOptions, resCode: resCodeOptions, time: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') } }]
+    userReqLogs: [{ _id: false, method: methodOptions, api: apiOptions, clientIp: clientIpOptions, resCode: resCodeOptions, time: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') } }],
+    notifications: [{ _id: false, seen: seenOptions, title: tokenOptions, type: tokenOptions, senderId: { type: String }, created_at: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') } }]
+
 });
 
 UserSchema.methods.toJSON = function () {

@@ -4,6 +4,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const { accessControl } = require('../middleware/control_accesses')
 const { User } = require('../model/user');
+const moment = require('moment-jalaali')
 
 
 router.post('/management/createuser', auth, accessControl, async (req, res) => {
@@ -264,5 +265,50 @@ router.delete('/management/users-tokens/:idlist', auth, accessControl, async (re
 
 });
 
+router.post('/management/user-feed/:id', auth, accessControl, async (req, res) => {
+    const token = req.header('x-auth-token');
+    try {
+        const finededUser = await User.findByToken(token)
+        if (finededUser) {
+            try {
+                let user = await User.findOne({ _id: req.params.id })
+                if (user) {
+                    user.notifications.push({
+                        seen: false,
+                        title: req.body.feed,
+                        type: 'bossFeed',
+                        senderId: finededUser._id,
+                        created_at: moment().format('jYYYY/jM/jD HH:mm:ss')
+                    })
+                    await user.save();
+                    return res.status(200).send()
+                }
+                return res.status(400).send('کاربری با این مشخصات وجود ندارد')
+            } catch (ex) {
+                console.log(ex)
+                return res.status(409).send({ error: ex })
+            }
+        }
+        return res.status(401).send()
+    } catch (e) {
+        res.status(400).json({
+            Error: `Somethings went wrong. ${e}`
+        });
+    }
+});
+
+router.get('/management/user-feed/:id', auth, accessControl, async (req, res) => {
+    try {
+        let user = await User.findOne({ _id: req.params.id })
+        if (user) {
+            return res.status(200).send(user.notifications)
+        }
+        return res.status(401).send()
+    } catch (e) {
+        res.status(400).json({
+            Error: `Somethings went wrong. ${e}`
+        });
+    }
+});
 
 module.exports = router;
