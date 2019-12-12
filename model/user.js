@@ -26,7 +26,7 @@ let UserSchema = new mongoose.Schema({
     userAvatar: { type: String },
     regDate: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') },
     userReqLogs: [{ _id: false, method: methodOptions, api: apiOptions, clientIp: clientIpOptions, resCode: resCodeOptions, time: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') } }],
-    notifications: [{ _id: false, seen: seenOptions, title: tokenOptions, type: tokenOptions, senderId: { type: String }, created_at: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') } }]
+    notifications: [{ seen: seenOptions, title: tokenOptions, type: tokenOptions, senderId: { type: String }, created_at: { type: Date, default: moment().format('jYYYY/jM/jD HH:mm:ss') } }]
 
 });
 

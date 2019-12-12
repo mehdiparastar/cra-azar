@@ -64,7 +64,8 @@ const commonPermission = [
     { '/api/users/user': 'GET' },
     { '/api/users/user-update': 'PUT' },
     { '/api/users/user-update-avatar': 'PUT' },
-    { '/api/users/user-change-password': 'PUT' }
+    { '/api/users/user-change-password': 'PUT' },
+    { '/api/users/user-notifications': 'GET' },
 ]
 const ppAdminPermission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]
 const ppUserL1Permission = [{ '/api/test1': 'POST' }, { '/api/test1': 'GET' }]

@@ -311,4 +311,25 @@ router.get('/management/user-feed/:id', auth, accessControl, async (req, res) =>
     }
 });
 
+router.get('/user-notifications', auth, accessControl, async (req, res) => {
+    const token = req.header('x-auth-token');
+    try {
+        const finededUser = await User.findByToken(token)
+        if (finededUser) {
+            let resp = []
+            const temp = _.pick(finededUser, ['notifications']).notifications.map(item => {
+                if (item.seen === false)
+                    resp = [...resp, item]
+            })
+            return res.status(200).send({ notifications: resp })
+        }
+        return res.status(400).send('کاربری با این مشخصات وجود ندارد')
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({
+            Error: `Somethings went wrong. ${e}`
+        });
+    }
+})
+
 module.exports = router;
