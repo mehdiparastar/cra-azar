@@ -29,7 +29,7 @@
         "morgan": "^1.9.1",
         "nodemon": "^1.19.1",
         "persian-date": "^1.1.0",
-        "validator": "^11.1.0",
+        "validator": "^13.7.0",
         "winston": "^3.2.1"
     },
     "devDependencies": {
